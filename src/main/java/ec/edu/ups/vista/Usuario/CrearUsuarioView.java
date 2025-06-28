@@ -87,4 +87,6 @@ public class CrearUsuarioView extends JFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
+
 }
