@@ -83,6 +83,10 @@ public class LoginView extends JFrame {
     public void setBtnRecuperar(JButton btnRecuperar) {
         this.btnRecuperar = btnRecuperar;
     }
+    public void limpiarCampos() {
+        textField1.setText("");
+        passwordField1.setText("");
+    }
 
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);

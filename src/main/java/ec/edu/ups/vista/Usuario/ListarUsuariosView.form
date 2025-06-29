@@ -36,7 +36,7 @@
         </constraints>
         <properties>
           <font name="Fira Code Medium" size="20" style="1"/>
-          <text value="Listar"/>
+          <text value="Salir"/>
         </properties>
       </component>
     </children>

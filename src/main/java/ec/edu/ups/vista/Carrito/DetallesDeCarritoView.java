@@ -3,21 +3,16 @@ package ec.edu.ups.vista.Carrito;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class CarritoEliminarView extends JInternalFrame {
+public class DetallesDeCarritoView extends JInternalFrame {
     private JPanel panel1;
     private JTable table1;
-    private JTextField textField1;
-    private JButton buscarButton;
-    private JButton eliminarButton;
     private JButton salirButton;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JButton eliminarCarritoButton;
+    private JButton eliminarButton;
     private DefaultTableModel modelo;
 
-    public CarritoEliminarView() {
+    public DetallesDeCarritoView() {
         setContentPane(panel1);
-        setTitle("Carrito de Compras");
+        setTitle("Lista de Carrito de Compras");
         setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
         setSize(500, 500);
         setClosable(true);
@@ -49,20 +44,12 @@ public class CarritoEliminarView extends JInternalFrame {
         this.table1 = table1;
     }
 
-    public JTextField getTextField1() {
-        return textField1;
+    public JButton getSalirButton() {
+        return salirButton;
     }
 
-    public void setTextField1(JTextField textField1) {
-        this.textField1 = textField1;
-    }
-
-    public JButton getBuscarButton() {
-        return buscarButton;
-    }
-
-    public void setBuscarButton(JButton buscarButton) {
-        this.buscarButton = buscarButton;
+    public void setSalirButton(JButton salirButton) {
+        this.salirButton = salirButton;
     }
 
     public JButton getEliminarButton() {
@@ -73,30 +60,6 @@ public class CarritoEliminarView extends JInternalFrame {
         this.eliminarButton = eliminarButton;
     }
 
-    public JButton getSalirButton() {
-        return salirButton;
-    }
-
-    public void setSalirButton(JButton salirButton) {
-        this.salirButton = salirButton;
-    }
-
-    public JTextField getTextField2() {
-        return textField2;
-    }
-
-    public void setTextField2(JTextField textField2) {
-        this.textField2 = textField2;
-    }
-
-    public JTextField getTextField3() {
-        return textField3;
-    }
-
-    public void setTextField3(JTextField textField3) {
-        this.textField3 = textField3;
-    }
-
     public DefaultTableModel getModelo() {
         return modelo;
     }
@@ -104,16 +67,7 @@ public class CarritoEliminarView extends JInternalFrame {
     public void setModelo(DefaultTableModel modelo) {
         this.modelo = modelo;
     }
-
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public JButton getEliminarCarritoButton() {
-        return eliminarCarritoButton;
-    }
-
-    public void setEliminarCarritoButton(JButton eliminarCarritoButton) {
-        this.eliminarCarritoButton = eliminarCarritoButton;
     }
 }

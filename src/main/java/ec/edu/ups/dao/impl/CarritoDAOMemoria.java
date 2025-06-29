@@ -12,7 +12,7 @@ public class CarritoDAOMemoria implements CarritoDAO {
     private List<Carrito> carritos;
 
     public CarritoDAOMemoria() {
-        this.carritos = new ArrayList<Carrito>();
+        carritos = new ArrayList<>();
     }
 
     @Override
@@ -22,9 +22,9 @@ public class CarritoDAOMemoria implements CarritoDAO {
 
     @Override
     public Carrito buscarPorCodigo(int codigo) {
-        for (Carrito carrito : carritos) {
-            if (carrito.getCodigo() == codigo) {
-                return carrito;
+        for (Carrito c : carritos) {
+            if (c.getCodigo() == codigo) {
+                return c;
             }
         }
         return null;
@@ -35,24 +35,26 @@ public class CarritoDAOMemoria implements CarritoDAO {
         for (int i = 0; i < carritos.size(); i++) {
             if (carritos.get(i).getCodigo() == carrito.getCodigo()) {
                 carritos.set(i, carrito);
-                break;
+                return;
             }
         }
     }
 
     @Override
-    public void eliminar(int codigo) {
-        Iterator<Carrito> iterator = carritos.iterator();
-        while (iterator.hasNext()) {
-            Carrito carrito = iterator.next();
-            if (carrito.getCodigo() == codigo) {
-                iterator.remove();
+    public boolean eliminar(int codigo) {
+        Iterator<Carrito> it = carritos.iterator();
+        while (it.hasNext()) {
+            Carrito c = it.next();
+            if (c.getCodigo() == codigo) {
+                it.remove();
+                return true;
             }
         }
+        return false;
     }
 
     @Override
     public List<Carrito> listarTodos() {
-        return carritos;
+        return new ArrayList<>(carritos);
     }
 }

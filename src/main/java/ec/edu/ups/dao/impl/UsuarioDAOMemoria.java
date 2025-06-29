@@ -10,26 +10,24 @@ import java.util.List;
 
 public class UsuarioDAOMemoria implements UsuarioDAO {
 
-    private List<Usuario> usuarios;
-    private List<UsuarioPreguntas> usuarioPreguntasList;
+    private List<Usuario> listaUsuarios;
 
     public UsuarioDAOMemoria() {
-        usuarios = new ArrayList<>();
-        usuarioPreguntasList = new ArrayList<>();
-
-        crearUsuario(new Usuario("admin", "12345", Rol.ADMINISTRADOR));
-        crearUsuario(new Usuario("user", "12345", Rol.USUARIO));
+        listaUsuarios = new ArrayList<>();
+        // Usuario administrador por defecto sin preguntas
+        Usuario admin = new Usuario("admin", "admin123", Rol.ADMINISTRADOR);
+        listaUsuarios.add(admin);
     }
 
     @Override
     public void crearUsuario(Usuario usuario) {
-        usuarios.add(usuario);
+        listaUsuarios.add(usuario);
     }
 
     @Override
     public Usuario buscarPorUsuarioYContrasenia(String usuario, String contrasenia) {
-        for (Usuario u : usuarios) {
-            if (u.getUsername().equals(usuario) && u.getContrasenia().equals(contrasenia)) {
+        for (Usuario u : listaUsuarios) {
+            if (u.getUsername().equalsIgnoreCase(usuario) && u.getContrasenia().equals(contrasenia)) {
                 return u;
             }
         }
@@ -38,8 +36,8 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
 
     @Override
     public Usuario buscarPorNombre(String usuario) {
-        for (Usuario u : usuarios) {
-            if (u.getUsername().equals(usuario)) {
+        for (Usuario u : listaUsuarios) {
+            if (u.getUsername().equalsIgnoreCase(usuario)) {
                 return u;
             }
         }
@@ -48,64 +46,55 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
 
     @Override
     public void actualizarContrasenia(String usuario, String nuevaContrasenia) {
-        for (Usuario u : usuarios) {
-            if (u.getUsername().equals(usuario)) {
-                u.setContrasenia(nuevaContrasenia);
-                break;
-            }
+        Usuario u = buscarPorNombre(usuario);
+        if (u != null) {
+            u.setContrasenia(nuevaContrasenia);
         }
     }
 
     @Override
     public void guardarPreguntasDeSeguridad(String usuario, List<PreguntasDeSeguridad> preguntas) {
-        for (UsuarioPreguntas up : usuarioPreguntasList) {
-            if (up.getUsername().equals(usuario)) {
-                usuarioPreguntasList.remove(up);
-                break;
-            }
+        Usuario u = buscarPorNombre(usuario);
+        if (u != null) {
+            u.setPreguntasDeSeguridad(preguntas);
         }
-        usuarioPreguntasList.add(new UsuarioPreguntas(usuario, preguntas));
     }
 
     @Override
     public List<PreguntasDeSeguridad> obtenerPreguntasDeSeguridad(String usuario) {
-        for (UsuarioPreguntas up : usuarioPreguntasList) {
-            if (up.getUsername().equals(usuario)) {
-                return up.getPreguntas();
-            }
+        Usuario u = buscarPorNombre(usuario);
+        if (u != null) {
+            return u.getPreguntasDeSeguridad();
         }
         return new ArrayList<>();
     }
 
     @Override
     public boolean validarRespuestaDeSeguridad(String usuario, String pregunta, String respuesta) {
-        for (UsuarioPreguntas up : usuarioPreguntasList) {
-            if (up.getUsername().equals(usuario)) {
-                for (PreguntasDeSeguridad ps : up.getPreguntas()) {
-                    if (ps.getPregunta().equals(pregunta) && ps.getRespuesta().equals(respuesta)) {
-                        return true;
-                    }
+        Usuario u = buscarPorNombre(usuario);
+        if (u != null) {
+            for (PreguntasDeSeguridad p : u.getPreguntasDeSeguridad()) {
+                if (p.getPregunta().equalsIgnoreCase(pregunta) &&
+                        p.getRespuesta().equalsIgnoreCase(respuesta)) {
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    private class UsuarioPreguntas {
-        private String username;
-        private List<PreguntasDeSeguridad> preguntas;
+    // Listar todos usuarios
+    public List<Usuario> listarTodos() {
+        return new ArrayList<>(listaUsuarios);
+    }
 
-        public UsuarioPreguntas(String username, List<PreguntasDeSeguridad> preguntas) {
-            this.username = username;
-            this.preguntas = preguntas;
-        }
 
-        public String getUsername() {
-            return username;
+    public boolean eliminarUsuario(String usuario) {
+        Usuario u = buscarPorNombre(usuario);
+        if (u != null) {
+            listaUsuarios.remove(u);
+            return true;
         }
-
-        public List<PreguntasDeSeguridad> getPreguntas() {
-            return preguntas;
-        }
+        return false;
     }
 }

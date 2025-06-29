@@ -90,6 +90,13 @@ public class Carrito {
     public double calcularTotal() {
         return calcularSubtotal() + calcularIVA();
     }
+    public List<Producto> getProductos() {
+        List<Producto> productos = new ArrayList<>();
+        for (ItemCarrito item : items) {
+            productos.add(item.getProducto());
+        }
+        return productos;
+    }
 
     @Override
     public String toString() {

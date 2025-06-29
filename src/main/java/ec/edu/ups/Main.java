@@ -1,173 +1,184 @@
 package ec.edu.ups;
 
-import ec.edu.ups.controlador.*;
-import ec.edu.ups.dao.*;
-import ec.edu.ups.dao.impl.*;
+import ec.edu.ups.controlador.CarritoController;
+import ec.edu.ups.controlador.ProductoController;
+import ec.edu.ups.controlador.UsuarioController;
+import ec.edu.ups.dao.CarritoDAO;
+import ec.edu.ups.dao.ProductoDAO;
+import ec.edu.ups.dao.UsuarioDAO;
+import ec.edu.ups.dao.impl.CarritoDAOMemoria;
+import ec.edu.ups.dao.impl.ProductoDAOMemoria;
+import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
-import ec.edu.ups.vista.*;
-import ec.edu.ups.vista.Carrito.CarritoAnadirView;
+import ec.edu.ups.vista.MenuPrincipalView;
+import ec.edu.ups.vista.Carrito.*;
 import ec.edu.ups.vista.Producto.*;
 import ec.edu.ups.vista.Usuario.*;
 
 import javax.swing.*;
 
 public class Main {
-    private static UsuarioDao usuarioDAO = new UsuarioDAOMemoria();
-    private static CarritoDAO carritoDAO = new CarritoDAOMemoria();
+
+    private static UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
     private static ProductoDAO productoDAO = new ProductoDAOMemoria();
+    private static CarritoDAO carritoDAO = new CarritoDAOMemoria();
 
+    // Vistas principales
     private static LoginView loginView = new LoginView();
-    private static AdminUsuariosView adminUsuariosView = new AdminUsuariosView();
-    private static AdminCarritosView adminCarritosView = new AdminCarritosView();
-
-    private static MenuPrincipalView principalView = new MenuPrincipalView();
+    private static MenuPrincipalView menuPrincipalView = new MenuPrincipalView();
 
     // Vistas Producto
     private static ProductoAnadirView productoAnadirView = new ProductoAnadirView();
-    private static ProductoListaView productoListaView = new ProductoListaView();
-    private static EliminarProductoView eliminarProductoView = new EliminarProductoView();
-    private static ActualizarProductoView actualizarProductoView = new ActualizarProductoView();
+    private static ProductoListarView productoListarView = new ProductoListarView();
+    private static ProductoActualizarView productoActualizarView = new ProductoActualizarView();
+    private static ProductoEliminarView productoEliminarView = new ProductoEliminarView();
 
-    // Vista Carrito
-    private static CarritoAnadirView carritoAnadirView = new CarritoAnadirView();
+    // Vistas Carrito
+    private static CarritoCrearView carritoCrearView = new CarritoCrearView();
+    private static CarritoListarView carritoListarView = new CarritoListarView();
+    private static CarritoActualizarView carritoActualizarView = new CarritoActualizarView();
+    private static CarritoEliminarView carritoEliminarView = new CarritoEliminarView();
+
+    // Vistas Usuario (admin)
+    private static CrearUsuarioView crearUsuarioView = new CrearUsuarioView();
+    private static CrearUsuario2 crearUsuario2View = new CrearUsuario2();
+    private static ListarUsuariosView listarUsuariosView = new ListarUsuariosView();
+    private static EliminarUsuarioView eliminarUsuarioView = new EliminarUsuarioView();
 
     // Controladores
     private static UsuarioController usuarioController;
     private static ProductoController productoController;
     private static CarritoController carritoController;
 
+    private static Usuario usuarioLogueado;
+
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> {
-            configurarLogin();
+        SwingUtilities.invokeLater(() -> {
+            inicializarControladores();
             mostrarLogin();
         });
     }
 
-    private static void configurarLogin() {
-        usuarioController = new UsuarioController(usuarioDAO, carritoDAO,
-                loginView, adminUsuariosView, adminCarritosView, principalView);
+    private static void inicializarControladores() {
+        usuarioController = new UsuarioController(
+                usuarioDAO,
+                loginView,
+                crearUsuarioView,
+                crearUsuario2View,
+                null,
+                null,
+                eliminarUsuarioView,
+                listarUsuariosView
+        );
 
-        // Registro usa la misma ventana RegistroDeUsuariosView para crear usuario
-        loginView.getBtnRegistrarse().addActionListener(e -> {
-            RegistroDeUsuariosView registro = new RegistroDeUsuariosView();
-            registro.setVisible(true);
+        productoController = new ProductoController(
+                productoDAO,
+                productoAnadirView,
+                productoListarView,
+                productoEliminarView,
+                productoActualizarView
+        );
+        DetallesDeCarritoView detallesDeCarritoView = new DetallesDeCarritoView();
 
-            registro.getBtnRegistrar().addActionListener(ev -> {
-                String username = registro.getTxtUsername().getText().trim();
-                String pass = new String(registro.getTxtContrasenia().getPassword());
-                String confirm = new String(registro.getTxtConfirmar().getPassword());
+        carritoController = new CarritoController(carritoDAO, productoDAO, carritoCrearView,
+                carritoListarView, carritoActualizarView,
+                carritoEliminarView, detallesDeCarritoView);
+        configurarEventosLogin();
+        configurarEventosMenuPrincipal();
+    }
 
-                String resultado = usuarioController.registrarUsuario(username, pass, confirm);
-                registro.mostrarMensaje(resultado);
-                if (resultado.equals("Usuario registrado correctamente.")) {
-                    registro.dispose();
-                }
-            });
+    private static void configurarEventosLogin() {
+        loginView.getBtnIniciarSesion().addActionListener(e -> {
+            String username = loginView.getTextField1().getText().trim();
+            String contrasenia = new String(loginView.getPasswordField1().getPassword());
 
-            registro.getBtnCancelar().addActionListener(ev2 -> registro.dispose());
+            if (username.isEmpty() || contrasenia.isEmpty()) {
+                loginView.mostrarMensaje("Ingrese usuario y contraseña");
+                return;
+            }
+
+            Usuario usuario = usuarioDAO.buscarPorUsuarioYContrasenia(username, contrasenia);
+            if (usuario == null) {
+                loginView.mostrarMensaje("Usuario o contraseña incorrectos");
+            } else {
+                usuarioLogueado = usuario;
+                loginView.mostrarMensaje("Bienvenido " + usuario.getUsername());
+                loginView.setVisible(false);
+                abrirMenuPrincipalSegunRol(usuario);
+            }
         });
 
-        // Inicializamos controladores de producto y carrito pero solo cuando el usuario inicia sesión
+        loginView.getBtnRegistrarse().addActionListener(e -> {
+            crearUsuarioView.setVisible(true);
+            loginView.setVisible(false);
+        });
+    }
+
+    private static void configurarEventosMenuPrincipal() {
+        // Usuarios
+        menuPrincipalView.getMenuItemCrearUsuario().addActionListener(e -> crearUsuarioView.setVisible(true));
+
+        menuPrincipalView.getMenuItemListarUsuario().addActionListener(e -> {
+            usuarioController.cargarUsuariosEnTabla();
+            listarUsuariosView.setVisible(true);
+        });
+
+        menuPrincipalView.getMenuItemEliminarUsuario().addActionListener(e -> eliminarUsuarioView.setVisible(true));
+
+        // Productos
+        menuPrincipalView.getMenuItemCrearProducto().addActionListener(e -> productoAnadirView.setVisible(true));
+
+        menuPrincipalView.getMenuItemListarProducto().addActionListener(e -> {
+            productoListarView.cargarDatos(productoDAO.listarTodos());
+            productoListarView.setVisible(true);
+        });
+
+        menuPrincipalView.getMenuItemActualizarProducto().addActionListener(e -> productoActualizarView.setVisible(true));
+
+        menuPrincipalView.getMenuItemEliminarProducto().addActionListener(e -> productoEliminarView.setVisible(true));
+
+        menuPrincipalView.getMenuItemBuscarProducto().addActionListener(e -> {
+            productoListarView.cargarDatos(productoDAO.listarTodos());
+            productoListarView.setVisible(true);
+        });
+
+        // Carrito
+        menuPrincipalView.getMenuItemCrearCarrito().addActionListener(e -> carritoCrearView.setVisible(true));
+
+        menuPrincipalView.getMenuItemListarCarrito().addActionListener(e -> {
+            carritoListarView.cargarDatos(carritoDAO.listarTodos());
+            carritoListarView.setVisible(true);
+        });
+
+        menuPrincipalView.getMenuItemActualizarCarrito().addActionListener(e -> carritoActualizarView.setVisible(true));
+
+        menuPrincipalView.getMenuItemEliminarCarrito().addActionListener(e -> carritoEliminarView.setVisible(true));
+
+        // Cerrar sesión
+        menuPrincipalView.getMenuItemCerrarSesion().addActionListener(e -> {
+            menuPrincipalView.dispose();
+            usuarioController.cerrarSesion();
+        });
+    }
+
+
+    private static void abrirMenuPrincipalSegunRol(Usuario usuario) {
+        boolean esAdmin = usuario.getRol() == Rol.ADMINISTRADOR;
+        menuPrincipalView.aplicarRestriccionesPorRol(esAdmin);
+        menuPrincipalView.setVisible(true);
     }
 
     private static void mostrarLogin() {
         loginView.limpiarCampos();
         loginView.setVisible(true);
-        principalView.setVisible(false);
+        menuPrincipalView.setVisible(false);
     }
 
-    public static void lanzarMenuPrincipal(Usuario usuario) {
-        // Instanciamos controladores con las vistas ya creadas (se mantienen para todo el ciclo)
-        productoController = new ProductoController(productoDAO, productoAnadirView,
-                productoListaView, carritoAnadirView, eliminarProductoView, actualizarProductoView);
-
-        carritoController = new CarritoController(carritoDAO, productoDAO, carritoAnadirView);
-
-        // Agregar ventanas internas al escritorio principal (JDesktopPane)
-        JDesktopPane desktop = principalView.getjDesktopPane();
-        desktop.removeAll();
-        desktop.add(productoAnadirView);
-        desktop.add(productoListaView);
-        desktop.add(carritoAnadirView);
-        desktop.add(eliminarProductoView);
-        desktop.add(actualizarProductoView);
-        desktop.add(adminUsuariosView);
-        desktop.add(adminCarritosView);
-
-        // Ocultamos todas al inicio
-        productoAnadirView.setVisible(false);
-        productoListaView.setVisible(false);
-        carritoAnadirView.setVisible(false);
-        eliminarProductoView.setVisible(false);
-        actualizarProductoView.setVisible(false);
-        adminUsuariosView.setVisible(false);
-        adminCarritosView.setVisible(false);
-
-        // Aplicar restricciones por rol
-        boolean esAdmin = usuario.getRol() == Rol.ADMINISTRADOR;
-        principalView.aplicarRestriccionesPorRol(esAdmin);
-
-        // Configurar listeners del menú principal para abrir ventanas internas
-        principalView.getMenuItemCrearProducto().addActionListener(e -> principalView.abrirVentanaInterna(productoAnadirView));
-        principalView.getMenuItemListarProducto().addActionListener(e -> {
-            productoListaView.cargarDatos(productoDAO.listarTodos());
-            principalView.abrirVentanaInterna(productoListaView);
-        });
-        principalView.getMenuItemBuscarProducto().addActionListener(e -> {
-            productoListaView.cargarDatos(productoDAO.listarTodos());
-            principalView.abrirVentanaInterna(productoListaView);
-        });
-        principalView.getMenuItemActualizarProducto().addActionListener(e -> principalView.abrirVentanaInterna(actualizarProductoView));
-        principalView.getMenuItemEliminarProducto().addActionListener(e -> {
-            eliminarProductoView.mostrarProductos(productoDAO.listarTodos());
-            principalView.abrirVentanaInterna(eliminarProductoView);
-        });
-
-        principalView.getMenuItemCrearCarrito().addActionListener(e -> {
-            carritoAnadirView.limpiarCampos();
-            principalView.abrirVentanaInterna(carritoAnadirView);
-        });
-        principalView.getMenuItemListarCarrito().addActionListener(e -> {
-            adminCarritosView.getBtnActualizar().doClick(); // para cargar datos
-            principalView.abrirVentanaInterna(adminCarritosView);
-        });
-        principalView.getMenuItemEliminarCarrito().addActionListener(e -> {
-            adminCarritosView.getBtnActualizar().doClick();
-            principalView.abrirVentanaInterna(adminCarritosView);
-        });
-
-        principalView.getMenuItemCrearUsuario().addActionListener(e -> {
-            RegistroDeUsuariosView registro = new RegistroDeUsuariosView();
-            registro.setVisible(true);
-            registro.getBtnRegistrar().addActionListener(ev -> {
-                String username = registro.getTxtUsername().getText().trim();
-                String pass = new String(registro.getTxtContrasenia().getPassword());
-                String confirm = new String(registro.getTxtConfirmar().getPassword());
-
-                String resultado = usuarioController.registrarUsuario(username, pass, confirm);
-                registro.mostrarMensaje(resultado);
-                if (resultado.equals("Usuario registrado correctamente.")) {
-                    registro.dispose();
-                }
-            });
-            registro.getBtnCancelar().addActionListener(ev2 -> registro.dispose());
-        });
-        principalView.getMenuItemListarUsuario().addActionListener(e -> {
-            usuarioController.cargarUsuariosAdmin();
-            principalView.abrirVentanaInterna(adminUsuariosView);
-        });
-        principalView.getMenuItemEliminarUsuario().addActionListener(e -> {
-            usuarioController.cargarUsuariosAdmin();
-            principalView.abrirVentanaInterna(adminUsuariosView);
-        });
-
-        principalView.getMenuItemCerrarSesion().addActionListener(e -> {
-            principalView.dispose();
-            usuarioController.cerrarSesion();
-        });
-
-        principalView.mostrarMensaje("Bienvenido: " + usuario.getUsername());
-        principalView.setVisible(true);
+    private static void cerrarSesion() {
+        usuarioLogueado = null;
+        menuPrincipalView.setVisible(false);
+        loginView.limpiarCampos();
+        loginView.setVisible(true);
     }
 }

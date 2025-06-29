@@ -12,4 +12,5 @@ public interface UsuarioDAO {
     void guardarPreguntasDeSeguridad(String usuario, List<PreguntasDeSeguridad> preguntas);
     List<PreguntasDeSeguridad> obtenerPreguntasDeSeguridad(String usuario);
     boolean validarRespuestaDeSeguridad(String usuario, String pregunta, String respuesta);
+    List<Usuario> listarTodos();
 }

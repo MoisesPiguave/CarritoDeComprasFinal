@@ -4,201 +4,214 @@ import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.modelo.PreguntasDeSeguridad;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
-import ec.edu.ups.vista.Usuario.CrearUsuario2;
-import ec.edu.ups.vista.Usuario.CrearUsuarioView;
-import ec.edu.ups.vista.Usuario.LoginView;
-import ec.edu.ups.vista.Usuario.RecuperarUsuaioVIew;
-import ec.edu.ups.vista.Usuario.RecuperarUsuario2;
+import ec.edu.ups.vista.Usuario.*;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class UsuarioController {
 
-    private final UsuarioDAO usuarioDAO;
-    private final LoginView loginView;
-    private final CrearUsuarioView crearUsuarioView;
-    private final CrearUsuario2 crearUsuario2View;
-    private final RecuperarUsuaioVIew recuperarUsuarioView;
-    private final RecuperarUsuario2 recuperarUsuario2View;
+    private UsuarioDAO usuarioDAO;
 
-    private Usuario usuarioAutenticado;
+    private LoginView loginView;
+    private CrearUsuarioView crearUsuarioView;
+    private CrearUsuario2 crearUsuario2View;
+    private RecuperarUsuaioVIew recuperarView1;
+    private RecuperarUsuario2 recuperarView2;
+    private EliminarUsuarioView eliminarUsuarioView;
+    private ListarUsuariosView listarUsuariosView;
 
-    private String tempUsername = "";
-    private String tempContrasenia = "";
+    private Usuario usuarioLogueado;
 
     public UsuarioController(UsuarioDAO usuarioDAO,
                              LoginView loginView,
                              CrearUsuarioView crearUsuarioView,
                              CrearUsuario2 crearUsuario2View,
-                             RecuperarUsuaioVIew recuperarUsuarioView,
-                             RecuperarUsuario2 recuperarUsuario2View) {
+                             RecuperarUsuaioVIew recuperarView1,
+                             RecuperarUsuario2 recuperarView2,
+                             EliminarUsuarioView eliminarUsuarioView,
+                             ListarUsuariosView listarUsuariosView) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.crearUsuarioView = crearUsuarioView;
         this.crearUsuario2View = crearUsuario2View;
-        this.recuperarUsuarioView = recuperarUsuarioView;
-        this.recuperarUsuario2View = recuperarUsuario2View;
+        this.recuperarView1 = recuperarView1;
+        this.recuperarView2 = recuperarView2;
+        this.eliminarUsuarioView = eliminarUsuarioView;
+        this.listarUsuariosView = listarUsuariosView;
 
         configurarEventos();
     }
 
     private void configurarEventos() {
-        loginView.getBtnIniciarSesion().addActionListener(e -> autenticar());
-        loginView.getBtnRegistrarse().addActionListener(e -> {
-            loginView.setVisible(false);
-            crearUsuarioView.setVisible(true);
-        });
+        loginView.getBtnIniciarSesion().addActionListener(e -> {
+            String username = loginView.getTextField1().getText().trim();
+            String contrasenia = new String(loginView.getPasswordField1().getPassword());
 
+            if (username.isEmpty() || contrasenia.isEmpty()) {
+                loginView.mostrarMensaje("Ingrese usuario y contraseña");
+                return;
+            }
 
-        loginView.getBtnRecuperar().addActionListener(e -> {
-            loginView.setVisible(false);
-            recuperarUsuarioView.setVisible(true);
-            cargarPreguntasEnComboBox("");
-        });
-
-
-        crearUsuarioView.getBtnCancelar().addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(crearUsuarioView,
-                    "¿Desea cancelar la creación de usuario?",
-                    "Confirmar",
-                    JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                crearUsuarioView.dispose();
-                loginView.setVisible(true);
+            Usuario usuario = usuarioDAO.buscarPorUsuarioYContrasenia(username, contrasenia);
+            if (usuario == null) {
+                loginView.mostrarMensaje("Usuario o contraseña incorrectos");
+            } else {
+                usuarioLogueado = usuario;
+                loginView.mostrarMensaje("Bienvenido " + usuario.getUsername());
+                abrirVentanaPrincipalSegunRol();
+                loginView.dispose();
             }
         });
 
+        loginView.getBtnRegistrarse().addActionListener(e -> {
+            crearUsuarioView.setVisible(true);
+            loginView.dispose();
+        });
 
         crearUsuarioView.getBtnContinuar().addActionListener(e -> {
-            String usuario = crearUsuarioView.getTxtUsuario().getText().trim();
-            String contra = new String(crearUsuarioView.getPswContrasena().getPassword());
+            String username = crearUsuarioView.getTxtUsuario().getText().trim();
+            String contrasenia = new String(crearUsuarioView.getPswContrasena().getPassword());
             String confirmar = new String(crearUsuarioView.getPswConfirmar().getPassword());
 
-            if (usuario.isEmpty() || contra.isEmpty() || confirmar.isEmpty()) {
-                crearUsuarioView.mostrarMensaje("Complete todos los campos.");
+            if (username.isEmpty() || contrasenia.isEmpty() || confirmar.isEmpty()) {
+                crearUsuarioView.mostrarMensaje("Complete todos los campos");
                 return;
             }
-            if (!contra.equals(confirmar)) {
-                crearUsuarioView.mostrarMensaje("Las contraseñas no coinciden.");
+            if (!contrasenia.equals(confirmar)) {
+                crearUsuarioView.mostrarMensaje("Las contraseñas no coinciden");
                 return;
             }
-            if (usuarioDAO.buscarPorNombre(usuario) != null) {
-                crearUsuarioView.mostrarMensaje("El usuario ya existe.");
+            if (usuarioDAO.buscarPorNombre(username) != null) {
+                crearUsuarioView.mostrarMensaje("El usuario ya existe");
                 return;
             }
 
-            crearUsuarioView.setVisible(false);
             crearUsuario2View.setVisible(true);
-
-
-            tempUsername = usuario;
-            tempContrasenia = contra;
+            crearUsuarioView.dispose();
         });
 
-
         crearUsuario2View.getBtnContinuar().addActionListener(e -> {
-            List<PreguntasDeSeguridad> preguntas = new ArrayList<>();
+            String p1 = crearUsuario2View.getTextField2().getText().trim();
+            String p2 = crearUsuario2View.getTextField4().getText().trim();
+            String p3 = crearUsuario2View.getTextField6().getText().trim();
 
-            preguntas.add(new PreguntasDeSeguridad(crearUsuario2View.getLlblP1().getText(),
-                    crearUsuario2View.getTextField2().getText()));
-            preguntas.add(new PreguntasDeSeguridad(crearUsuario2View.getLblP2().getText(),
-                    crearUsuario2View.getTextField4().getText()));
-            preguntas.add(new PreguntasDeSeguridad(crearUsuario2View.getLblP3().getText(),
-                    crearUsuario2View.getTextField6().getText()));
-
-            if (preguntas.stream().anyMatch(p -> p.getRespuesta() == null || p.getRespuesta().isEmpty())) {
-                crearUsuario2View.mostrarMensaje("Debe responder todas las preguntas.");
+            if (p1.isEmpty() || p2.isEmpty() || p3.isEmpty()) {
+                crearUsuario2View.mostrarMensaje("Complete las respuestas de seguridad");
                 return;
             }
 
-            Usuario nuevoUsuario = new Usuario(tempUsername, tempContrasenia, Rol.USUARIO);
-            usuarioDAO.crearUsuario(nuevoUsuario);
-            usuarioDAO.guardarPreguntasDeSeguridad(tempUsername, preguntas);
+            String username = crearUsuarioView.getTxtUsuario().getText().trim();
+            String contrasenia = new String(crearUsuarioView.getPswContrasena().getPassword());
 
-            crearUsuario2View.mostrarMensaje("Usuario creado correctamente.");
+            Usuario nuevoUsuario = new Usuario(username, contrasenia, Rol.USUARIO);
+            usuarioDAO.crearUsuario(nuevoUsuario);
+
+            List<PreguntasDeSeguridad> preguntas = List.of(
+                    new PreguntasDeSeguridad(crearUsuario2View.getLlblP1().getText(), p1),
+                    new PreguntasDeSeguridad(crearUsuario2View.getLblP2().getText(), p2),
+                    new PreguntasDeSeguridad(crearUsuario2View.getLblP3().getText(), p3)
+            );
+            usuarioDAO.guardarPreguntasDeSeguridad(username, preguntas);
+
+            crearUsuario2View.mostrarMensaje("Usuario creado con éxito");
             crearUsuario2View.dispose();
             loginView.setVisible(true);
         });
 
+        recuperarView1.getBtnContinuar().addActionListener(e -> {
+            String username = loginView.getTextField1().getText().trim();
+            String preguntaSeleccionada = (String) recuperarView1.getComboBox1().getSelectedItem();
+            String respuesta = recuperarView1.getTextField1().getText().trim();
 
-        recuperarUsuarioView.getBtnContinuar().addActionListener(e -> {
-            String usuario = recuperarUsuarioView.getTextField1().getText().trim();
-            String pregunta = (String) recuperarUsuarioView.getComboBox1().getSelectedItem();
-            String respuesta = recuperarUsuarioView.getTextField1().getText().trim();
-
-            if (usuario.isEmpty()) {
-                recuperarUsuarioView.mostrarMensaje("Ingrese el usuario.");
+            if (username.isEmpty() || respuesta.isEmpty()) {
+                recuperarView1.mostrarMensaje("Complete todos los campos");
                 return;
             }
-            if (pregunta == null || pregunta.isEmpty()) {
-                recuperarUsuarioView.mostrarMensaje("Seleccione una pregunta.");
-                return;
-            }
-            if (respuesta.isEmpty()) {
-                recuperarUsuarioView.mostrarMensaje("Ingrese la respuesta.");
+            if (!usuarioDAO.validarRespuestaDeSeguridad(username, preguntaSeleccionada, respuesta)) {
+                recuperarView1.mostrarMensaje("Respuesta incorrecta");
                 return;
             }
 
-            boolean valida = usuarioDAO.validarRespuestaDeSeguridad(usuario, pregunta, respuesta);
-            if (valida) {
-                usuarioAutenticado = usuarioDAO.buscarPorNombre(usuario);
-                recuperarUsuarioView.dispose();
-                recuperarUsuario2View.setVisible(true);
-            } else {
-                recuperarUsuarioView.mostrarMensaje("Respuesta incorrecta.");
-            }
+            recuperarView2.setVisible(true);
+            recuperarView1.dispose();
         });
 
+        recuperarView2.getContinuarButton().addActionListener(e -> {
+            String nuevaContrasenia = new String(recuperarView2.getPasswordField1().getPassword());
+            String confirmarContrasenia = new String(recuperarView2.getPasswordField2().getPassword());
+            String username = loginView.getTextField1().getText().trim();
 
-        recuperarUsuario2View.getContinuarButton().addActionListener(e -> {
-            String nuevaContra = new String(recuperarUsuario2View.getPasswordField1().getPassword());
-            String confirmarContra = new String(recuperarUsuario2View.getPasswordField2().getPassword());
-
-            if (nuevaContra.isEmpty() || confirmarContra.isEmpty()) {
-                recuperarUsuario2View.mostrarMensaje("Complete ambos campos.");
+            if (nuevaContrasenia.isEmpty() || confirmarContrasenia.isEmpty()) {
+                recuperarView2.mostrarMensaje("Complete todos los campos");
                 return;
             }
-            if (!nuevaContra.equals(confirmarContra)) {
-                recuperarUsuario2View.mostrarMensaje("Las contraseñas no coinciden.");
+            if (!nuevaContrasenia.equals(confirmarContrasenia)) {
+                recuperarView2.mostrarMensaje("Las contraseñas no coinciden");
                 return;
             }
 
-            usuarioDAO.actualizarContrasenia(usuarioAutenticado.getUsername(), nuevaContra);
-            recuperarUsuario2View.mostrarMensaje("Contraseña actualizada correctamente.");
-            recuperarUsuario2View.dispose();
+            usuarioDAO.actualizarContrasenia(username, nuevaContrasenia);
+            recuperarView2.mostrarMensaje("Contraseña actualizada");
+            recuperarView2.dispose();
             loginView.setVisible(true);
         });
+
+        listarUsuariosView.getLblListar().addActionListener(e -> {
+            if (usuarioLogueado == null || usuarioLogueado.getRol() != Rol.ADMINISTRADOR) {
+                listarUsuariosView.mostrarMensaje("No tiene permiso para listar usuarios");
+                return;
+            }
+            cargarUsuariosEnTabla();
+        });
+
+        eliminarUsuarioView.getBtnBuscar().addActionListener(e -> {
+            if (usuarioLogueado == null || usuarioLogueado.getRol() != Rol.ADMINISTRADOR) {
+                eliminarUsuarioView.mostrarMensaje("No tiene permiso para eliminar usuarios");
+                return;
+            }
+            String username = eliminarUsuarioView.getTxtUsuario().getText().trim();
+            if (username.isEmpty()) {
+                eliminarUsuarioView.mostrarMensaje("Ingrese el usuario a eliminar");
+                return;
+            }
+            Usuario u = usuarioDAO.buscarPorNombre(username);
+            if (u == null) {
+                eliminarUsuarioView.mostrarMensaje("Usuario no encontrado");
+                return;
+            }
+            int confirm = JOptionPane.showConfirmDialog(eliminarUsuarioView,
+                    "¿Eliminar usuario: " + username + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                eliminarUsuarioView.mostrarMensaje("Usuario eliminado");
+            }
+        });
     }
 
-    private void autenticar() {
-        String usuario = loginView.getTextField1().getText().trim();
-        String contrasenia = new String(loginView.getPasswordField1().getPassword()).trim();
-
-        if (usuario.isEmpty() || contrasenia.isEmpty()) {
-            loginView.mostrarMensaje("Complete usuario y contraseña.");
-            return;
-        }
-
-        usuarioAutenticado = usuarioDAO.buscarPorUsuarioYContrasenia(usuario, contrasenia);
-
-        if (usuarioAutenticado == null) {
-            loginView.mostrarMensaje("Usuario o contraseña incorrectos.");
+    private void abrirVentanaPrincipalSegunRol() {
+        if (usuarioLogueado.getRol() == Rol.ADMINISTRADOR) {
         } else {
-            loginView.mostrarMensaje("Bienvenido, " + usuarioAutenticado.getUsername());
-            loginView.dispose();
-
         }
     }
 
-    private void cargarPreguntasEnComboBox(String username) {
-        recuperarUsuarioView.getComboBox1().removeAllItems();
-        if (username.isEmpty()) return;
+    public void cargarUsuariosEnTabla() {
+        List<Usuario> usuarios = usuarioDAO.listarTodos();
+        DefaultTableModel modelo = listarUsuariosView.getModelo();
+        modelo.setRowCount(0);
 
-        List<PreguntasDeSeguridad> preguntas = usuarioDAO.obtenerPreguntasDeSeguridad(username);
-        for (PreguntasDeSeguridad p : preguntas) {
-            recuperarUsuarioView.getComboBox1().addItem(p.getPregunta());
+        for (Usuario u : usuarios) {
+            modelo.addRow(new Object[]{
+                    u.getUsername(),
+                    u.getContrasenia(),
+                    "Carritos..."
+            });
         }
+    }
+
+    public void cerrarSesion() {
+        usuarioLogueado = null;
+        loginView.limpiarCampos();
+        loginView.setVisible(true);
     }
 }
