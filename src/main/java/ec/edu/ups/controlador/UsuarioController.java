@@ -13,7 +13,6 @@ import java.util.List;
 public class UsuarioController {
 
     private UsuarioDAO usuarioDAO;
-
     private LoginView loginView;
     private CrearUsuarioView crearUsuarioView;
     private CrearUsuario2 crearUsuario2View;
@@ -21,7 +20,6 @@ public class UsuarioController {
     private RecuperarUsuario2 recuperarView2;
     private EliminarUsuarioView eliminarUsuarioView;
     private ListarUsuariosView listarUsuariosView;
-
     private Usuario usuarioLogueado;
 
     public UsuarioController(UsuarioDAO usuarioDAO,
@@ -32,6 +30,13 @@ public class UsuarioController {
                              RecuperarUsuario2 recuperarView2,
                              EliminarUsuarioView eliminarUsuarioView,
                              ListarUsuariosView listarUsuariosView) {
+
+        if (usuarioDAO == null || loginView == null || crearUsuarioView == null ||
+                crearUsuario2View == null || recuperarView1 == null || recuperarView2 == null ||
+                eliminarUsuarioView == null || listarUsuariosView == null) {
+            throw new IllegalArgumentException("Ninguna vista o DAO puede ser null al crear UsuarioController");
+        }
+
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.crearUsuarioView = crearUsuarioView;
@@ -184,15 +189,14 @@ public class UsuarioController {
             int confirm = JOptionPane.showConfirmDialog(eliminarUsuarioView,
                     "¿Eliminar usuario: " + username + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
+                usuarioDAO.eliminarUsuario(username);
                 eliminarUsuarioView.mostrarMensaje("Usuario eliminado");
             }
         });
     }
 
     private void abrirVentanaPrincipalSegunRol() {
-        if (usuarioLogueado.getRol() == Rol.ADMINISTRADOR) {
-        } else {
-        }
+        ec.edu.ups.Main.abrirMenuPrincipal(usuarioLogueado);
     }
 
     public void cargarUsuariosEnTabla() {
@@ -201,11 +205,7 @@ public class UsuarioController {
         modelo.setRowCount(0);
 
         for (Usuario u : usuarios) {
-            modelo.addRow(new Object[]{
-                    u.getUsername(),
-                    u.getContrasenia(),
-                    "Carritos..."
-            });
+            modelo.addRow(new Object[]{ u.getUsername(), u.getContrasenia(), "Carritos..." });
         }
     }
 

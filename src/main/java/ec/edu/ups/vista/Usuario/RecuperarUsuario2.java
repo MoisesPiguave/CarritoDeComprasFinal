@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Usuario;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
 public class RecuperarUsuario2 extends JFrame {
@@ -11,7 +11,7 @@ public class RecuperarUsuario2 extends JFrame {
     public RecuperarUsuario2() {
         setContentPane(panelPrincipal);
         setTitle("Recuperar Cuenta");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
     }
@@ -50,5 +50,10 @@ public class RecuperarUsuario2 extends JFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("recuperar.titulo"));
+        continuarButton.setText(mensajes.getMensaje("recuperar.boton.continuar"));
+    }
+
 
 }

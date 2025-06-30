@@ -263,7 +263,6 @@ public class CarritoController {
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION);
         if (resp == JOptionPane.YES_OPTION) {
-            // Buscamos el carrito actual en detalles por código en la tabla padre
             int filaCarrito = carritoListarView.getTable1().getSelectedRow();
             if (filaCarrito < 0) {
                 detallesDeCarritoView.mostrarMensaje("Error: no se encontró carrito seleccionado");

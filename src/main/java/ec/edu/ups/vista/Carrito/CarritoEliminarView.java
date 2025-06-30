@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Carrito;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -116,4 +116,22 @@ public class CarritoEliminarView extends JInternalFrame {
     public void setEliminarCarritoButton(JButton eliminarCarritoButton) {
         this.eliminarCarritoButton = eliminarCarritoButton;
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("carrito.titulo")); // Título ventana
+
+        // Actualizar columnas de la tabla
+        String[] columnas = {
+                mensajes.getMensaje("carrito.codigo"),
+                mensajes.getMensaje("carrito.nombre"),
+                mensajes.getMensaje("carrito.precio")
+        };
+        modelo.setColumnIdentifiers(columnas);
+
+        // Botones
+        buscarButton.setText(mensajes.getMensaje("carrito.buscar")); // Si tienes esta clave
+        eliminarButton.setText(mensajes.getMensaje("carrito.eliminar"));
+        eliminarCarritoButton.setText(mensajes.getMensaje("carrito.eliminar")); // Si tiene botón extra
+        salirButton.setText(mensajes.getMensaje("carrito.salir"));
+    }
+
 }

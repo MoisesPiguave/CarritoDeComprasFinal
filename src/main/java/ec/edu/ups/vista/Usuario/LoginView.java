@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Usuario;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
 public class LoginView extends JFrame {
@@ -15,7 +15,7 @@ public class LoginView extends JFrame {
     public  LoginView(){
         setContentPane(panelPrincipal);
         setTitle("Iniciar Sesion");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
     }
@@ -91,4 +91,15 @@ public class LoginView extends JFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("login.titulo")); // Título de la ventana
+
+        lblUsuario.setText(mensajes.getMensaje("login.usuario"));         // Label Usuario
+        lblContrasena.setText(mensajes.getMensaje("login.contrasena"));   // Label Contraseña
+
+        btnIniciarSesion.setText(mensajes.getMensaje("login.boton.iniciar"));   // Botón Iniciar Sesión
+        btnRegistrarse.setText(mensajes.getMensaje("login.boton.registrarse")); // Botón Registrarse
+        btnRecuperar.setText(mensajes.getMensaje("login.boton.recuperar"));     // Botón Recuperar
+    }
+
 }

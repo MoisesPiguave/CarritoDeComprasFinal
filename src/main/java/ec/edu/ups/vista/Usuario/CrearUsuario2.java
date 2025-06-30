@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Usuario;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
 public class CrearUsuario2 extends JFrame {
@@ -15,7 +15,7 @@ public class CrearUsuario2 extends JFrame {
     public CrearUsuario2() {
         setContentPane(panelPrincipal);
         setTitle("Crear Usuario");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
     }
@@ -86,4 +86,14 @@ public class CrearUsuario2 extends JFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("menu.usuario.crear")); // O puedes crear una clave como: usuario.crear.titulo
+
+        llblP1.setText(mensajes.getMensaje("usuario.usuario"));        // Supongo que este campo es para el Username
+        lblP2.setText(mensajes.getMensaje("usuario.contrasena"));      // Para la contraseña
+        lblP3.setText(mensajes.getMensaje("usuario.carritos"));        // Supongo que es para Carritos o algo similar
+
+        btnContinuar.setText(mensajes.getMensaje("usuario.continuar"));  // Botón de continuar
+    }
+
 }

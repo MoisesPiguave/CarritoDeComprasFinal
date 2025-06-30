@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Usuario;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
@@ -16,7 +16,7 @@ public class CrearUsuarioView extends JFrame {
     public CrearUsuarioView() {
         setContentPane(panelPrincipal);
         setTitle("Crear Usuario");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
     }
@@ -86,6 +86,15 @@ public class CrearUsuarioView extends JFrame {
     }
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
+    }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("usuario.crear.titulo"));  // Título de la ventana
+
+        lblUsuario.setText(mensajes.getMensaje("usuario.usuario"));          // Username
+        lblContrasena.setText(mensajes.getMensaje("usuario.contrasena"));    // Password
+
+        btnContinuar.setText(mensajes.getMensaje("usuario.continuar"));      // Botón Continuar
+        btnCancelar.setText(mensajes.getMensaje("usuario.cancelar"));        // Botón Cancelar
     }
 
 

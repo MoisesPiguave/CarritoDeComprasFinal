@@ -59,6 +59,6 @@ public class ProductoDAOMemoria implements ProductoDAO {
 
     @Override
     public List<Producto> listarTodos() {
-        return new ArrayList<>(listaProductos);  // Retorna copia para evitar modificaciones externas
+        return new ArrayList<>(listaProductos);
     }
 }

@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Carrito;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.modelo.Carrito;
 
 import javax.swing.*;
@@ -86,4 +86,20 @@ public class CarritoListarView extends JInternalFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("menu.carrito.listar")); // Título ventana
+
+        // Actualizar columnas de la tabla
+        String[] columnas = {
+                mensajes.getMensaje("carrito.codigo"),
+                mensajes.getMensaje("usuario.usuario"),       // "Usuario" o "Username"
+                mensajes.getMensaje("carrito.total_productos") // "Total Products"
+        };
+        modelo.setColumnIdentifiers(columnas);
+
+        // Botones
+        detallesButton.setText(mensajes.getMensaje("carrito.detalles")); // Detalles
+        salirButton.setText(mensajes.getMensaje("carrito.salir"));       // Salir / Exit
+    }
+
 }

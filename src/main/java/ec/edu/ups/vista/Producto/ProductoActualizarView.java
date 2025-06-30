@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Producto;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
 public class ProductoActualizarView extends JInternalFrame{
@@ -84,4 +84,17 @@ public class ProductoActualizarView extends JInternalFrame{
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("menu.producto.actualizar")); // O producto.actualizar.titulo si prefieres
+        lblCodigo.setText(mensajes.getMensaje("producto.codigo"));
+        lblNombre.setText(mensajes.getMensaje("producto.nombre"));
+        lblPrecio.setText(mensajes.getMensaje("producto.precio"));
+        buscarButton.setText(mensajes.getMensaje("producto.buscar"));
+        actualizarButton.setText(mensajes.getMensaje("producto.actualizar"));
+        salirButton.setText(mensajes.getMensaje("carrito.salir"));
+    }
+
+
+
 }

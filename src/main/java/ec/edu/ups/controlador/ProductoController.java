@@ -25,10 +25,7 @@ public class ProductoController {
     }
 
     private void configurarEventos() {
-        productoListarView.getListarButton().addActionListener(e -> listarProductos());
-
         productoListarView.getActualizarButton().addActionListener(e -> listarProductos());
-
         productoListarView.getSalirButton().addActionListener(e -> productoListarView.dispose());
     }
 
@@ -36,7 +33,7 @@ public class ProductoController {
         List<Producto> lista = productoDAO.listarTodos();
         DefaultTableModel modelo = productoListarView.getModelo();
 
-        modelo.setRowCount(0); // Limpiar tabla antes de volver a llenar
+        modelo.setRowCount(0);
 
         for (Producto p : lista) {
             modelo.addRow(new Object[]{

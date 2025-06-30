@@ -26,7 +26,7 @@ public class Main {
 
     // Vistas principales
     private static LoginView loginView = new LoginView();
-    private static MenuPrincipalView menuPrincipalView = new MenuPrincipalView();
+    private static MenuPrincipalView menuPrincipalView = new MenuPrincipalView(); // actualizado
 
     // Vistas Producto
     private static ProductoAnadirView productoAnadirView = new ProductoAnadirView();
@@ -39,10 +39,13 @@ public class Main {
     private static CarritoListarView carritoListarView = new CarritoListarView();
     private static CarritoActualizarView carritoActualizarView = new CarritoActualizarView();
     private static CarritoEliminarView carritoEliminarView = new CarritoEliminarView();
+    private static DetallesDeCarritoView detallesDeCarritoView = new DetallesDeCarritoView();
 
-    // Vistas Usuario (admin)
+    // Vistas Usuario
     private static CrearUsuarioView crearUsuarioView = new CrearUsuarioView();
     private static CrearUsuario2 crearUsuario2View = new CrearUsuario2();
+    private static RecuperarUsuaioVIew recuperarView1 = new RecuperarUsuaioVIew();
+    private static RecuperarUsuario2 recuperarView2 = new RecuperarUsuario2();
     private static ListarUsuariosView listarUsuariosView = new ListarUsuariosView();
     private static EliminarUsuarioView eliminarUsuarioView = new EliminarUsuarioView();
 
@@ -66,8 +69,8 @@ public class Main {
                 loginView,
                 crearUsuarioView,
                 crearUsuario2View,
-                null,
-                null,
+                recuperarView1,
+                recuperarView2,
                 eliminarUsuarioView,
                 listarUsuariosView
         );
@@ -79,94 +82,99 @@ public class Main {
                 productoEliminarView,
                 productoActualizarView
         );
-        DetallesDeCarritoView detallesDeCarritoView = new DetallesDeCarritoView();
 
-        carritoController = new CarritoController(carritoDAO, productoDAO, carritoCrearView,
-                carritoListarView, carritoActualizarView,
-                carritoEliminarView, detallesDeCarritoView);
+        carritoController = new CarritoController(
+                carritoDAO,
+                productoDAO,
+                carritoCrearView,
+                carritoListarView,
+                carritoActualizarView,
+                carritoEliminarView,
+                detallesDeCarritoView
+        );
+
         configurarEventosLogin();
         configurarEventosMenuPrincipal();
     }
 
     private static void configurarEventosLogin() {
-        loginView.getBtnIniciarSesion().addActionListener(e -> {
-            String username = loginView.getTextField1().getText().trim();
-            String contrasenia = new String(loginView.getPasswordField1().getPassword());
+        loginView.setVisible(true);
+    }
 
-            if (username.isEmpty() || contrasenia.isEmpty()) {
-                loginView.mostrarMensaje("Ingrese usuario y contraseña");
-                return;
-            }
+    public static void abrirMenuPrincipal(Usuario usuario) {
+        usuarioLogueado = usuario;
 
-            Usuario usuario = usuarioDAO.buscarPorUsuarioYContrasenia(username, contrasenia);
-            if (usuario == null) {
-                loginView.mostrarMensaje("Usuario o contraseña incorrectos");
-            } else {
-                usuarioLogueado = usuario;
-                loginView.mostrarMensaje("Bienvenido " + usuario.getUsername());
-                loginView.setVisible(false);
-                abrirMenuPrincipalSegunRol(usuario);
-            }
-        });
+        // Aplica restricciones para administrador y usuario
+        boolean esAdmin = usuario.getRol() == Rol.ADMINISTRADOR;
+        boolean esUsuarioNormal = usuario.getRol() == Rol.USUARIO;
 
-        loginView.getBtnRegistrarse().addActionListener(e -> {
-            crearUsuarioView.setVisible(true);
-            loginView.setVisible(false);
-        });
+        menuPrincipalView.aplicarRestriccionesPorRol(esAdmin, esUsuarioNormal);
+
+        // Mostrar menú principal y ocultar login
+        menuPrincipalView.setVisible(true);
+        loginView.setVisible(false);
     }
 
     private static void configurarEventosMenuPrincipal() {
         // Usuarios
-        menuPrincipalView.getMenuItemCrearUsuario().addActionListener(e -> crearUsuarioView.setVisible(true));
+        menuPrincipalView.getMenuItemCrearUsuario().addActionListener(e -> {
+            crearUsuarioView.setVisible(true);
+        });
 
         menuPrincipalView.getMenuItemListarUsuario().addActionListener(e -> {
             usuarioController.cargarUsuariosEnTabla();
-            listarUsuariosView.setVisible(true);
+            menuPrincipalView.abrirVentanaInterna(listarUsuariosView);
         });
 
-        menuPrincipalView.getMenuItemEliminarUsuario().addActionListener(e -> eliminarUsuarioView.setVisible(true));
+        menuPrincipalView.getMenuItemEliminarUsuario().addActionListener(e -> {
+            menuPrincipalView.abrirVentanaInterna(eliminarUsuarioView);
+        });
 
         // Productos
-        menuPrincipalView.getMenuItemCrearProducto().addActionListener(e -> productoAnadirView.setVisible(true));
+        menuPrincipalView.getMenuItemCrearProducto().addActionListener(e -> {
+            menuPrincipalView.abrirVentanaInterna(productoAnadirView);
+        });
 
         menuPrincipalView.getMenuItemListarProducto().addActionListener(e -> {
             productoListarView.cargarDatos(productoDAO.listarTodos());
-            productoListarView.setVisible(true);
+            menuPrincipalView.abrirVentanaInterna(productoListarView);
         });
 
-        menuPrincipalView.getMenuItemActualizarProducto().addActionListener(e -> productoActualizarView.setVisible(true));
+        menuPrincipalView.getMenuItemActualizarProducto().addActionListener(e -> {
+            menuPrincipalView.abrirVentanaInterna(productoActualizarView);
+        });
 
-        menuPrincipalView.getMenuItemEliminarProducto().addActionListener(e -> productoEliminarView.setVisible(true));
+        menuPrincipalView.getMenuItemEliminarProducto().addActionListener(e -> {
+            menuPrincipalView.abrirVentanaInterna(productoEliminarView);
+        });
 
         menuPrincipalView.getMenuItemBuscarProducto().addActionListener(e -> {
             productoListarView.cargarDatos(productoDAO.listarTodos());
-            productoListarView.setVisible(true);
+            menuPrincipalView.abrirVentanaInterna(productoListarView);
         });
 
         // Carrito
-        menuPrincipalView.getMenuItemCrearCarrito().addActionListener(e -> carritoCrearView.setVisible(true));
+        menuPrincipalView.getMenuItemCrearCarrito().addActionListener(e -> {
+            menuPrincipalView.abrirVentanaInterna(carritoCrearView);
+        });
 
         menuPrincipalView.getMenuItemListarCarrito().addActionListener(e -> {
             carritoListarView.cargarDatos(carritoDAO.listarTodos());
-            carritoListarView.setVisible(true);
+            menuPrincipalView.abrirVentanaInterna(carritoListarView);
         });
 
-        menuPrincipalView.getMenuItemActualizarCarrito().addActionListener(e -> carritoActualizarView.setVisible(true));
+        menuPrincipalView.getMenuItemActualizarCarrito().addActionListener(e -> {
+            menuPrincipalView.abrirVentanaInterna(carritoActualizarView);
+        });
 
-        menuPrincipalView.getMenuItemEliminarCarrito().addActionListener(e -> carritoEliminarView.setVisible(true));
+        menuPrincipalView.getMenuItemEliminarCarrito().addActionListener(e -> {
+            menuPrincipalView.abrirVentanaInterna(carritoEliminarView);
+        });
 
         // Cerrar sesión
         menuPrincipalView.getMenuItemCerrarSesion().addActionListener(e -> {
-            menuPrincipalView.dispose();
-            usuarioController.cerrarSesion();
+            cerrarSesion();
         });
-    }
-
-
-    private static void abrirMenuPrincipalSegunRol(Usuario usuario) {
-        boolean esAdmin = usuario.getRol() == Rol.ADMINISTRADOR;
-        menuPrincipalView.aplicarRestriccionesPorRol(esAdmin);
-        menuPrincipalView.setVisible(true);
     }
 
     private static void mostrarLogin() {
@@ -175,9 +183,11 @@ public class Main {
         menuPrincipalView.setVisible(false);
     }
 
-    private static void cerrarSesion() {
+    public static void cerrarSesion() {
         usuarioLogueado = null;
+        menuPrincipalView.limpiarAlCerrarSesion();
         menuPrincipalView.setVisible(false);
+
         loginView.limpiarCampos();
         loginView.setVisible(true);
     }

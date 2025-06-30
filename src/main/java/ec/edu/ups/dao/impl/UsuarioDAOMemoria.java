@@ -14,7 +14,6 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
 
     public UsuarioDAOMemoria() {
         listaUsuarios = new ArrayList<>();
-        // Usuario administrador por defecto sin preguntas
         Usuario admin = new Usuario("admin", "admin123", Rol.ADMINISTRADOR);
         listaUsuarios.add(admin);
     }
@@ -72,7 +71,7 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
     @Override
     public boolean validarRespuestaDeSeguridad(String usuario, String pregunta, String respuesta) {
         Usuario u = buscarPorNombre(usuario);
-        if (u != null) {
+        if (u != null && u.getPreguntasDeSeguridad() != null) {
             for (PreguntasDeSeguridad p : u.getPreguntasDeSeguridad()) {
                 if (p.getPregunta().equalsIgnoreCase(pregunta) &&
                         p.getRespuesta().equalsIgnoreCase(respuesta)) {
@@ -83,18 +82,16 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
         return false;
     }
 
-    // Listar todos usuarios
+    @Override
     public List<Usuario> listarTodos() {
         return new ArrayList<>(listaUsuarios);
     }
 
-
-    public boolean eliminarUsuario(String usuario) {
-        Usuario u = buscarPorNombre(usuario);
+    @Override
+    public void eliminarUsuario(String username) {
+        Usuario u = buscarPorNombre(username);
         if (u != null) {
             listaUsuarios.remove(u);
-            return true;
         }
-        return false;
     }
 }

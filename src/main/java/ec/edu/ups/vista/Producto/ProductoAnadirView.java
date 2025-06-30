@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Producto;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
 public class ProductoAnadirView extends JInternalFrame {
@@ -75,4 +75,13 @@ public class ProductoAnadirView extends JInternalFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("producto.titulo"));
+        lblCodigo.setText(mensajes.getMensaje("producto.codigo"));
+        lblNombre.setText(mensajes.getMensaje("producto.nombre"));
+        lblPrecio.setText(mensajes.getMensaje("producto.precio"));
+        guardarButton.setText(mensajes.getMensaje("producto.guardar"));
+        salirButton.setText(mensajes.getMensaje("carrito.salir")); // O crea menu.producto.salir si quieres
+    }
+
 }

@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Producto;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.modelo.Producto;
 
 import javax.swing.*;
@@ -9,7 +9,6 @@ import java.util.List;
 public class ProductoListarView extends JInternalFrame {
     private JTable tblProducto;
     private JPanel panelPrincipal;
-    private JButton listarButton;
     private JButton salirButton;
     private JButton actualizarButton;
     private DefaultTableModel modelo;
@@ -63,9 +62,6 @@ public class ProductoListarView extends JInternalFrame {
         return tblProducto;
     }
 
-    public JButton getListarButton() {
-        return listarButton;
-    }
 
     public JButton getSalirButton() {
         return salirButton;
@@ -82,4 +78,17 @@ public class ProductoListarView extends JInternalFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("menu.producto.listar"));
+        salirButton.setText(mensajes.getMensaje("carrito.salir"));
+        actualizarButton.setText(mensajes.getMensaje("producto.actualizar"));
+        // También puedes actualizar las cabeceras si quieres:
+        String[] columnas = {
+                mensajes.getMensaje("producto.codigo"),
+                mensajes.getMensaje("producto.nombre"),
+                mensajes.getMensaje("producto.precio")
+        };
+        modelo.setColumnIdentifiers(columnas);
+    }
+
 }

@@ -13,4 +13,5 @@ public interface UsuarioDAO {
     List<PreguntasDeSeguridad> obtenerPreguntasDeSeguridad(String usuario);
     boolean validarRespuestaDeSeguridad(String usuario, String pregunta, String respuesta);
     List<Usuario> listarTodos();
+    void eliminarUsuario(String username);
 }

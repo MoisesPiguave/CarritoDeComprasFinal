@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Usuario;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
 public class EliminarUsuarioView extends JInternalFrame {
@@ -16,11 +16,11 @@ public class EliminarUsuarioView extends JInternalFrame {
 
     public EliminarUsuarioView() {
         setContentPane(panelPrincipal);
-        setTitle("Crear Usuario");
+        setTitle("Eliminar Usuario");
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(600, 400);
     }
 
@@ -106,4 +106,15 @@ public class EliminarUsuarioView extends JInternalFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
  }
+
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("menu.usuario.eliminar"));  // Título de la ventana
+
+        lblUsuario.setText(mensajes.getMensaje("usuario.usuario"));          // Username
+        lblContrasena.setText(mensajes.getMensaje("usuario.contrasena"));    // Password
+        lblCarrito.setText(mensajes.getMensaje("usuario.carritos"));         // Carts
+
+        btnBuscar.setText(mensajes.getMensaje("producto.buscar"));           // Botón Buscar (puedes cambiar la clave si prefieres otra)
+    }
+
 }

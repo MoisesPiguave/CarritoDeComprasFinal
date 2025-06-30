@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Carrito;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -109,4 +109,21 @@ public class CarritoCrearView extends JInternalFrame{
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("carrito.titulo")); // Título ventana
+
+        // Actualizar columnas de la tabla
+        String[] columnas = {
+                mensajes.getMensaje("carrito.codigo"),
+                mensajes.getMensaje("carrito.nombre"),
+                mensajes.getMensaje("carrito.precio")
+        };
+        modelo.setColumnIdentifiers(columnas);
+
+        // Botones
+        agregarButton.setText(mensajes.getMensaje("carrito.agregar"));
+        crearButton.setText(mensajes.getMensaje("carrito.crear"));
+        salirButton.setText(mensajes.getMensaje("carrito.salir"));
+    }
+
 }

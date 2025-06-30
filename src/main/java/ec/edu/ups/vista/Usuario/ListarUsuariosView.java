@@ -1,5 +1,5 @@
 package ec.edu.ups.vista.Usuario;
-
+import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,7 +13,7 @@ public ListarUsuariosView() {
 
     setContentPane(panelPrincipal);
     setTitle("Listar Usuarios");
-    setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
     setSize(500, 500);
     setClosable(true);
     setIconifiable(true);
@@ -69,4 +69,17 @@ public ListarUsuariosView() {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("menu.usuario.listar"));
+        lblListar.setText(mensajes.getMensaje("menu.usuario.listar")); // Si lblListar es un botón o label de título
+        // Si tienes columnas en una tabla:
+        String[] columnas = {
+                mensajes.getMensaje("usuario.usuario"),
+                mensajes.getMensaje("usuario.contrasena")
+                // Agrega más columnas si las tienes
+        };
+        modelo.setColumnIdentifiers(columnas);
+    }
+
+
 }
