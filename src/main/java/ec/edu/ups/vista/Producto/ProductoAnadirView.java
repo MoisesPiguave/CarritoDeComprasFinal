@@ -7,8 +7,8 @@ public class ProductoAnadirView extends JInternalFrame {
     private JTextField txtCodigo;
     private JTextField txtNombre;
     private JTextField txtPrecio;
-    private JButton guardarButton;
-    private JButton salirButton;
+    private JButton btnGuardar;
+    private JButton btnSalir;
     private JLabel lblCodigo;
     private JLabel lblNombre;
     private JLabel lblPrecio;
@@ -58,19 +58,19 @@ public class ProductoAnadirView extends JInternalFrame {
     }
 
     public JButton getGuardarButton() {
-        return guardarButton;
+        return btnGuardar;
     }
 
     public void setGuardarButton(JButton guardarButton) {
-        this.guardarButton = guardarButton;
+        this.btnGuardar = guardarButton;
     }
 
     public JButton getSalirButton() {
-        return salirButton;
+        return btnSalir;
     }
 
     public void setSalirButton(JButton salirButton) {
-        this.salirButton = salirButton;
+        this.btnSalir = salirButton;
     }
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
@@ -80,8 +80,8 @@ public class ProductoAnadirView extends JInternalFrame {
         lblCodigo.setText(mensajes.getMensaje("producto.codigo"));
         lblNombre.setText(mensajes.getMensaje("producto.nombre"));
         lblPrecio.setText(mensajes.getMensaje("producto.precio"));
-        guardarButton.setText(mensajes.getMensaje("producto.guardar"));
-        salirButton.setText(mensajes.getMensaje("carrito.salir")); // O crea menu.producto.salir si quieres
+        btnGuardar.setText(mensajes.getMensaje("producto.guardar"));
+        btnSalir.setText(mensajes.getMensaje("carrito.salir")); // O crea menu.producto.salir si quieres
     }
 
 }

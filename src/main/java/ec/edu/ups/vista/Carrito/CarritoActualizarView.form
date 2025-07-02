@@ -5,14 +5,18 @@
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-1448482"/>
+    </properties>
     <border type="none" title="Actualizar Carrito"/>
     <children>
       <scrollpane id="396b8">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-8025715"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="ccc54" class="javax.swing.JTable" binding="table1" default-binding="true">
@@ -21,7 +25,7 @@
           </component>
         </children>
       </scrollpane>
-      <component id="fe7d9" class="javax.swing.JLabel">
+      <component id="fe7d9" class="javax.swing.JLabel" binding="lblTotal">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -29,7 +33,7 @@
           <text value="Total"/>
         </properties>
       </component>
-      <component id="d73d7" class="javax.swing.JLabel">
+      <component id="d73d7" class="javax.swing.JLabel" binding="lblSubtotal">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -37,7 +41,7 @@
           <text value="Subtotal"/>
         </properties>
       </component>
-      <component id="9783e" class="javax.swing.JButton" binding="salirButton" default-binding="true">
+      <component id="9783e" class="javax.swing.JButton" binding="btnSalir">
         <constraints>
           <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -45,7 +49,7 @@
           <text value="Salir"/>
         </properties>
       </component>
-      <component id="10e58" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+      <component id="10e58" class="javax.swing.JTextField" binding="txtSubtotal">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -53,7 +57,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="50966" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <component id="50966" class="javax.swing.JTextField" binding="txtTotal">
         <constraints>
           <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -61,7 +65,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="9d96a" class="javax.swing.JLabel">
+      <component id="9d96a" class="javax.swing.JLabel" binding="lblNombre">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -69,7 +73,7 @@
           <text value="Nombre"/>
         </properties>
       </component>
-      <component id="3f7b3" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+      <component id="3f7b3" class="javax.swing.JTextField" binding="txtNombre">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -77,7 +81,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="c8ed3" class="javax.swing.JButton" binding="actualizarButton" default-binding="true">
+      <component id="c8ed3" class="javax.swing.JButton" binding="btnActualizar">
         <constraints>
           <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -85,7 +89,7 @@
           <text value="Actualizar"/>
         </properties>
       </component>
-      <component id="27957" class="javax.swing.JLabel">
+      <component id="27957" class="javax.swing.JLabel" binding="lblCantidad">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -93,7 +97,7 @@
           <text value="Cantidad"/>
         </properties>
       </component>
-      <component id="b7d43" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+      <component id="b7d43" class="javax.swing.JTextField" binding="txtCantidad">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>

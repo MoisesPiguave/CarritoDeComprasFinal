@@ -1,17 +1,28 @@
 package ec.edu.ups.vista.Carrito;
+
+import ec.edu.ups.modelo.Carrito;
+import ec.edu.ups.modelo.ItemCarrito;
+import java.util.Locale;
 import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class CarritoCrearView extends JInternalFrame{
+public class CarritoCrearView extends JInternalFrame {
     private JPanel panelPrincipal;
     private JTable table1;
-    private JTextField textField1;
-    private JButton agregarButton;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JButton crearButton;
-    private JButton salirButton;
+    private JTextField txtNombre;
+    private JButton btnAgregar;
+    private JTextField txtSubtotal;
+    private JTextField txtTotal;
+    private JTextField txtFecha;
+    private JButton btnCrear;
+    private JButton btnSalir;
+    private JLabel lblNombre;
+    private JLabel lblCantidad;
+    private JLabel lblSubtotal;
+    private JLabel lblTotal;
+    private JTextField txtCantidad;
+    private JLabel lblFecha;
     private DefaultTableModel modelo;
 
     public CarritoCrearView() {
@@ -23,7 +34,8 @@ public class CarritoCrearView extends JInternalFrame{
         setIconifiable(true);
         setResizable(true);
 
-        String[] columnas = {"Codigo", "Nombre", "Precio"};
+        // Columnas incluyendo la fecha
+        String[] columnas = {"Codigo", "Nombre", "Precio", "Cantidad", "Fecha"};
         modelo = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -49,53 +61,100 @@ public class CarritoCrearView extends JInternalFrame{
         this.table1 = table1;
     }
 
-    public JTextField getTextField1() {
-        return textField1;
+    public JTextField getTxtNombre() {
+        return txtNombre;
     }
 
-    public void setTextField1(JTextField textField1) {
-        this.textField1 = textField1;
+    public void setTxtNombre(JTextField txtNombre) {
+        this.txtNombre = txtNombre;
     }
 
-
-    public JButton getAgregarButton() {
-        return agregarButton;
+    public JButton getBtnAgregar() {
+        return btnAgregar;
     }
 
-    public void setAgregarButton(JButton agregarButton) {
-        this.agregarButton = agregarButton;
+    public void setBtnAgregar(JButton btnAgregar) {
+        this.btnAgregar = btnAgregar;
     }
 
-    public JTextField getTextField2() {
-        return textField2;
+    public JTextField getTxtSubtotal() {
+        return txtSubtotal;
     }
 
-    public void setTextField2(JTextField textField2) {
-        this.textField2 = textField2;
+    public void setTxtSubtotal(JTextField txtSubtotal) {
+        this.txtSubtotal = txtSubtotal;
     }
 
-    public JTextField getTextField3() {
-        return textField3;
+    public JTextField getTxtTotal() {
+        return txtTotal;
     }
 
-    public void setTextField3(JTextField textField3) {
-        this.textField3 = textField3;
+    public void setTxtTotal(JTextField txtTotal) {
+        this.txtTotal = txtTotal;
     }
 
-    public JButton getCrearButton() {
-        return crearButton;
+    public JTextField getTxtFecha() {
+        return txtFecha;
     }
 
-    public void setCrearButton(JButton crearButton) {
-        this.crearButton = crearButton;
+    public void setTxtFecha(JTextField txtFecha) {
+        this.txtFecha = txtFecha;
     }
 
-    public JButton getSalirButton() {
-        return salirButton;
+    public JButton getBtnCrear() {
+        return btnCrear;
     }
 
-    public void setSalirButton(JButton salirButton) {
-        this.salirButton = salirButton;
+    public void setBtnCrear(JButton btnCrear) {
+        this.btnCrear = btnCrear;
+    }
+
+    public JButton getBtnSalir() {
+        return btnSalir;
+    }
+
+    public void setBtnSalir(JButton btnSalir) {
+        this.btnSalir = btnSalir;
+    }
+
+    public JLabel getLblNombre() {
+        return lblNombre;
+    }
+
+    public void setLblNombre(JLabel lblNombre) {
+        this.lblNombre = lblNombre;
+    }
+
+    public JLabel getLblCantidad() {
+        return lblCantidad;
+    }
+
+    public void setLblCantidad(JLabel lblCantidad) {
+        this.lblCantidad = lblCantidad;
+    }
+
+    public JLabel getLblSubtotal() {
+        return lblSubtotal;
+    }
+
+    public void setLblSubtotal(JLabel lblSubtotal) {
+        this.lblSubtotal = lblSubtotal;
+    }
+
+    public JLabel getLblTotal() {
+        return lblTotal;
+    }
+
+    public void setLblTotal(JLabel lblTotal) {
+        this.lblTotal = lblTotal;
+    }
+
+    public JTextField getTxtCantidad() {
+        return txtCantidad;
+    }
+
+    public void setTxtCantidad(JTextField txtCantidad) {
+        this.txtCantidad = txtCantidad;
     }
 
     public DefaultTableModel getModelo() {
@@ -109,21 +168,43 @@ public class CarritoCrearView extends JInternalFrame{
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
-    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
-        setTitle(mensajes.getMensaje("carrito.titulo")); // Título ventana
 
-        // Actualizar columnas de la tabla
+    public JLabel getLblFecha() {
+        return lblFecha;
+    }
+
+    public void setLblFecha(JLabel lblFecha) {
+        this.lblFecha = lblFecha;
+    }
+
+    public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
+        setTitle(mensajes.getMensaje("carrito.titulo"));
+
         String[] columnas = {
                 mensajes.getMensaje("carrito.codigo"),
                 mensajes.getMensaje("carrito.nombre"),
-                mensajes.getMensaje("carrito.precio")
+                mensajes.getMensaje("carrito.precio"),
+                mensajes.getMensaje("carrito.cantidad")
         };
         modelo.setColumnIdentifiers(columnas);
 
-        // Botones
-        agregarButton.setText(mensajes.getMensaje("carrito.agregar"));
-        crearButton.setText(mensajes.getMensaje("carrito.crear"));
-        salirButton.setText(mensajes.getMensaje("carrito.salir"));
+        btnAgregar.setText(mensajes.getMensaje("carrito.agregar"));
+        btnCrear.setText(mensajes.getMensaje("carrito.crear"));
+        btnSalir.setText(mensajes.getMensaje("carrito.salir"));
     }
 
+
+
+    public void actualizarTablaConMoneda(DefaultTableModel modelo, Carrito carrito) {
+        modelo.setRowCount(0);
+        for (ItemCarrito item : carrito.obtenerItems()) {
+            String precioFormateado = ec.edu.ups.Util.FormateadorUtils.formatearMoneda(item.getProducto().getPrecio(), Locale.getDefault());
+            modelo.addRow(new Object[]{
+                    item.getProducto().getCodigo(),
+                    item.getProducto().getNombre(),
+                    precioFormateado,
+                    item.getCantidad()
+            });
+        }
+    }
 }

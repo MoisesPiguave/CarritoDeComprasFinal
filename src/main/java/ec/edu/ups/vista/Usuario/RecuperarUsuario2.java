@@ -5,8 +5,10 @@ import javax.swing.*;
 public class RecuperarUsuario2 extends JFrame {
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
-    private JButton continuarButton;
+    private JButton btnContinuar;
     private JPanel panelPrincipal;
+    private JLabel lblContrasena;
+    private JLabel lblConfirmar;
 
     public RecuperarUsuario2() {
         setContentPane(panelPrincipal);
@@ -33,11 +35,11 @@ public class RecuperarUsuario2 extends JFrame {
     }
 
     public JButton getContinuarButton() {
-        return continuarButton;
+        return btnContinuar;
     }
 
     public void setContinuarButton(JButton continuarButton) {
-        this.continuarButton = continuarButton;
+        this.btnContinuar = continuarButton;
     }
 
     public JPanel getPanelPrincipal() {
@@ -52,7 +54,7 @@ public class RecuperarUsuario2 extends JFrame {
     }
     public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
         setTitle(mensajes.getMensaje("recuperar.titulo"));
-        continuarButton.setText(mensajes.getMensaje("recuperar.boton.continuar"));
+        btnContinuar.setText(mensajes.getMensaje("recuperar.boton.continuar"));
     }
 
 

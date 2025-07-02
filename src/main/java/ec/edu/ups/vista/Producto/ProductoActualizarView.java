@@ -5,12 +5,12 @@ import javax.swing.*;
 public class ProductoActualizarView extends JInternalFrame{
     private JLabel lblCodigo;
     private JTextField txtCodigo;
-    private JButton buscarButton;
-    private JButton actualizarButton;
+    private JButton btnBuscar;
+    private JButton btnActualizar;
     private JTextField txtNombre;
     private JTextField txtPrecio;
     private JPanel panelPrincipal;
-    private JButton salirButton;
+    private JButton btnSalir;
     private JLabel lblNombre;
     private JLabel lblPrecio;
 
@@ -43,19 +43,19 @@ public class ProductoActualizarView extends JInternalFrame{
     }
 
     public JButton getBuscarButton() {
-        return buscarButton;
+        return btnBuscar;
     }
 
     public void setBuscarButton(JButton buscarButton) {
-        this.buscarButton = buscarButton;
+        this.btnBuscar = buscarButton;
     }
 
     public JButton getActualizarButton() {
-        return actualizarButton;
+        return btnActualizar;
     }
 
     public void setActualizarButton(JButton actualizarButton) {
-        this.actualizarButton = actualizarButton;
+        this.btnActualizar = actualizarButton;
     }
 
     public JTextField getTextField2() {
@@ -90,9 +90,9 @@ public class ProductoActualizarView extends JInternalFrame{
         lblCodigo.setText(mensajes.getMensaje("producto.codigo"));
         lblNombre.setText(mensajes.getMensaje("producto.nombre"));
         lblPrecio.setText(mensajes.getMensaje("producto.precio"));
-        buscarButton.setText(mensajes.getMensaje("producto.buscar"));
-        actualizarButton.setText(mensajes.getMensaje("producto.actualizar"));
-        salirButton.setText(mensajes.getMensaje("carrito.salir"));
+        btnBuscar.setText(mensajes.getMensaje("producto.buscar"));
+        btnActualizar.setText(mensajes.getMensaje("producto.actualizar"));
+        btnSalir.setText(mensajes.getMensaje("carrito.salir"));
     }
 
 

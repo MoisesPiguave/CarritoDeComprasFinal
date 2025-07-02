@@ -14,4 +14,5 @@ public interface UsuarioDAO {
     boolean validarRespuestaDeSeguridad(String usuario, String pregunta, String respuesta);
     List<Usuario> listarTodos();
     void eliminarUsuario(String username);
+    void actualizarUsuario(Usuario usuario);
 }

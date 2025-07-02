@@ -9,8 +9,8 @@ import java.util.List;
 public class ProductoListarView extends JInternalFrame {
     private JTable tblProducto;
     private JPanel panelPrincipal;
-    private JButton salirButton;
-    private JButton actualizarButton;
+    private JButton btnsalir;
+    private JButton btnActualizar;
     private DefaultTableModel modelo;
 
     public ProductoListarView() {
@@ -64,11 +64,11 @@ public class ProductoListarView extends JInternalFrame {
 
 
     public JButton getSalirButton() {
-        return salirButton;
+        return btnsalir;
     }
 
     public JButton getActualizarButton() {
-        return actualizarButton;
+        return btnActualizar;
     }
 
     public JPanel getPanelPrincipal() {
@@ -80,8 +80,8 @@ public class ProductoListarView extends JInternalFrame {
     }
     public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
         setTitle(mensajes.getMensaje("menu.producto.listar"));
-        salirButton.setText(mensajes.getMensaje("carrito.salir"));
-        actualizarButton.setText(mensajes.getMensaje("producto.actualizar"));
+        btnsalir.setText(mensajes.getMensaje("carrito.salir"));
+        btnActualizar.setText(mensajes.getMensaje("producto.actualizar"));
         // También puedes actualizar las cabeceras si quieres:
         String[] columnas = {
                 mensajes.getMensaje("producto.codigo"),

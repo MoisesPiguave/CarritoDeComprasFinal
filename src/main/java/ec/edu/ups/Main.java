@@ -43,7 +43,7 @@ public class Main {
 
     // Vistas Usuario
     private static CrearUsuarioView crearUsuarioView = new CrearUsuarioView();
-    private static CrearUsuario2 crearUsuario2View = new CrearUsuario2();
+    private static CrearUsuario1 crearUsuario2View = new CrearUsuario1();
     private static RecuperarUsuaioVIew recuperarView1 = new RecuperarUsuaioVIew();
     private static RecuperarUsuario2 recuperarView2 = new RecuperarUsuario2();
     private static ListarUsuariosView listarUsuariosView = new ListarUsuariosView();

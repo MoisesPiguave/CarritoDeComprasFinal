@@ -26,7 +26,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="39986" class="javax.swing.JLabel">
+      <component id="39986" class="javax.swing.JLabel" binding="lblContrasena">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -35,7 +35,7 @@
           <text value="Contraseña"/>
         </properties>
       </component>
-      <component id="51fe2" class="javax.swing.JLabel">
+      <component id="51fe2" class="javax.swing.JLabel" binding="lblConfirmar">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -44,7 +44,7 @@
           <text value="Confirmar"/>
         </properties>
       </component>
-      <component id="ce12c" class="javax.swing.JButton" binding="continuarButton" default-binding="true">
+      <component id="ce12c" class="javax.swing.JButton" binding="btnContinuar">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

@@ -3,14 +3,14 @@ import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
 public class ProductoEliminarView extends JInternalFrame {
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField txtCodigo;
+    private JTextField txtNombre;
+    private JTextField txtPrecio;
     private JLabel lblCodigo;
     private JLabel lblNombre;
     private JLabel lblPrecio;
-    private JButton eliminarButton;
-    private JButton salirButton;
+    private JButton btnEliminar;
+    private JButton btnSalir;
     private JPanel panelPrincipal;
 
     public ProductoEliminarView() {
@@ -25,28 +25,28 @@ public class ProductoEliminarView extends JInternalFrame {
         setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
     }
 
-    public JTextField getTextField1() {
-        return textField1;
+    public JTextField getTxtCodigo() {
+        return txtCodigo;
     }
 
-    public void setTextField1(JTextField textField1) {
-        this.textField1 = textField1;
+    public void setTxtCodigo(JTextField txtCodigo) {
+        this.txtCodigo = txtCodigo;
     }
 
-    public JTextField getTextField2() {
-        return textField2;
+    public JTextField getTxtNombre() {
+        return txtNombre;
     }
 
-    public void setTextField2(JTextField textField2) {
-        this.textField2 = textField2;
+    public void setTxtNombre(JTextField txtNombre) {
+        this.txtNombre = txtNombre;
     }
 
-    public JTextField getTextField3() {
-        return textField3;
+    public JTextField getTxtPrecio() {
+        return txtPrecio;
     }
 
-    public void setTextField3(JTextField textField3) {
-        this.textField3 = textField3;
+    public void setTxtPrecio(JTextField txtPrecio) {
+        this.txtPrecio = txtPrecio;
     }
 
     public JLabel getLblCodigo() {
@@ -73,20 +73,20 @@ public class ProductoEliminarView extends JInternalFrame {
         this.lblPrecio = lblPrecio;
     }
 
-    public JButton getEliminarButton() {
-        return eliminarButton;
+    public JButton getBtnEliminar() {
+        return btnEliminar;
     }
 
-    public void setEliminarButton(JButton eliminarButton) {
-        this.eliminarButton = eliminarButton;
+    public void setBtnEliminar(JButton btnEliminar) {
+        this.btnEliminar = btnEliminar;
     }
 
-    public JButton getSalirButton() {
-        return salirButton;
+    public JButton getBtnSalir() {
+        return btnSalir;
     }
 
-    public void setSalirButton(JButton salirButton) {
-        this.salirButton = salirButton;
+    public void setBtnSalir(JButton btnSalir) {
+        this.btnSalir = btnSalir;
     }
 
     public JPanel getPanelPrincipal() {
@@ -104,8 +104,8 @@ public class ProductoEliminarView extends JInternalFrame {
             lblCodigo.setText(mensajes.getMensaje("producto.codigo"));
             lblNombre.setText(mensajes.getMensaje("producto.nombre"));
             lblPrecio.setText(mensajes.getMensaje("producto.precio"));
-            eliminarButton.setText(mensajes.getMensaje("producto.eliminar"));
-            salirButton.setText(mensajes.getMensaje("carrito.salir"));
+            btnEliminar.setText(mensajes.getMensaje("producto.eliminar"));
+            btnSalir.setText(mensajes.getMensaje("carrito.salir"));
         }
 
     }

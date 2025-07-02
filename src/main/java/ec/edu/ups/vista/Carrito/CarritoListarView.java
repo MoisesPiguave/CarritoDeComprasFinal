@@ -1,4 +1,5 @@
 package ec.edu.ups.vista.Carrito;
+
 import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.modelo.Carrito;
 
@@ -9,20 +10,21 @@ import java.util.List;
 public class CarritoListarView extends JInternalFrame {
     private JPanel panel1;
     private JTable table1;
-    private JButton detallesButton;
-    private JButton salirButton;
+    private JButton btnDetalles;
+    private JButton btnSalir;
     private DefaultTableModel modelo;
 
     public CarritoListarView() {
         setContentPane(panel1);
-        setTitle("Lista de Carrito de Compras");
+        setTitle("Carrito de Compras");
         setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
         setSize(500, 500);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
 
-        String[] columnas = {"Código", "Usuario", "Total Productos"};
+        // Columnas incluyendo la fecha
+        String[] columnas = {"Codigo", "Nombre", "Precio", "Cantidad", "Fecha"};
         modelo = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -37,8 +39,8 @@ public class CarritoListarView extends JInternalFrame {
         for (Carrito carrito : lista) {
             modelo.addRow(new Object[]{
                     carrito.getCodigo(),
-                    carrito.getUsuario().getUsername(),
-                    carrito.getProductos().size()
+                    carrito.getUsuario() != null ? carrito.getUsuario().getUsername() : "N/A",
+                    carrito.getProductos() != null ? carrito.getProductos().size() : 0
             });
         }
     }
@@ -60,19 +62,19 @@ public class CarritoListarView extends JInternalFrame {
     }
 
     public JButton getDetallesButton() {
-        return detallesButton;
+        return btnDetalles;
     }
 
     public void setDetallesButton(JButton detallesButton) {
-        this.detallesButton = detallesButton;
+        this.btnDetalles = detallesButton;
     }
 
     public JButton getSalirButton() {
-        return salirButton;
+        return btnSalir;
     }
 
     public void setSalirButton(JButton salirButton) {
-        this.salirButton = salirButton;
+        this.btnSalir = salirButton;
     }
 
     public DefaultTableModel getModelo() {
@@ -86,6 +88,7 @@ public class CarritoListarView extends JInternalFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
     public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
         setTitle(mensajes.getMensaje("menu.carrito.listar")); // Título ventana
 
@@ -98,8 +101,7 @@ public class CarritoListarView extends JInternalFrame {
         modelo.setColumnIdentifiers(columnas);
 
         // Botones
-        detallesButton.setText(mensajes.getMensaje("carrito.detalles")); // Detalles
-        salirButton.setText(mensajes.getMensaje("carrito.salir"));       // Salir / Exit
+        btnDetalles.setText(mensajes.getMensaje("carrito.detalles")); // Detalles
+        btnSalir.setText(mensajes.getMensaje("carrito.salir"));       // Salir / Exit
     }
-
 }

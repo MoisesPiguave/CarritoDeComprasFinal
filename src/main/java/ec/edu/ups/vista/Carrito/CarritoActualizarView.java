@@ -1,4 +1,5 @@
 package ec.edu.ups.vista.Carrito;
+
 import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -6,16 +7,19 @@ import javax.swing.table.DefaultTableModel;
 public class CarritoActualizarView extends JInternalFrame {
     private JPanel panelPrincipal;
     private JTable table1;
-    private JButton salirButton;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JButton actualizarButton;
-    private JTextField textField4;
+    private JButton btnSalir;
+    private JTextField txtTotal;
+    private JTextField txtSubtotal;
+    private JTextField txtNombre;
+    private JButton btnActualizar;
+    private JTextField txtCantidad;
+    private JLabel lblTotal;
+    private JLabel lblSubtotal;
+    private JLabel lblCantidad;
+    private JLabel lblNombre;
     private DefaultTableModel modelo;
 
     public CarritoActualizarView() {
-
         setContentPane(panelPrincipal);
         setTitle("Listado de Productos");
         setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
@@ -24,7 +28,8 @@ public class CarritoActualizarView extends JInternalFrame {
         setIconifiable(true);
         setResizable(true);
 
-        String[] columnas = {"Codigo", "Nombre", "Precio"};
+        // Columnas incluyendo la fecha
+        String[] columnas = {"Codigo", "Nombre", "Precio", "Cantidad", "Fecha"};
         modelo = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -50,52 +55,84 @@ public class CarritoActualizarView extends JInternalFrame {
         this.table1 = table1;
     }
 
-    public JButton getSalirButton() {
-        return salirButton;
+    public JButton getBtnSalir() {
+        return btnSalir;
     }
 
-    public void setSalirButton(JButton salirButton) {
-        this.salirButton = salirButton;
+    public void setBtnSalir(JButton btnSalir) {
+        this.btnSalir = btnSalir;
     }
 
-    public JTextField getTextField1() {
-        return textField1;
+    public JTextField getTxtTotal() {
+        return txtTotal;
     }
 
-    public void setTextField1(JTextField textField1) {
-        this.textField1 = textField1;
+    public void setTxtTotal(JTextField txtTotal) {
+        this.txtTotal = txtTotal;
     }
 
-    public JTextField getTextField2() {
-        return textField2;
+    public JTextField getTxtSubtotal() {
+        return txtSubtotal;
     }
 
-    public void setTextField2(JTextField textField2) {
-        this.textField2 = textField2;
+    public void setTxtSubtotal(JTextField txtSubtotal) {
+        this.txtSubtotal = txtSubtotal;
     }
 
-    public JTextField getTextField3() {
-        return textField3;
+    public JTextField getTxtNombre() {
+        return txtNombre;
     }
 
-    public void setTextField3(JTextField textField3) {
-        this.textField3 = textField3;
+    public void setTxtNombre(JTextField txtNombre) {
+        this.txtNombre = txtNombre;
     }
 
-    public JButton getActualizarButton() {
-        return actualizarButton;
+    public JButton getBtnActualizar() {
+        return btnActualizar;
     }
 
-    public void setActualizarButton(JButton actualizarButton) {
-        this.actualizarButton = actualizarButton;
+    public void setBtnActualizar(JButton btnActualizar) {
+        this.btnActualizar = btnActualizar;
     }
 
-    public JTextField getTextField4() {
-        return textField4;
+    public JTextField getTxtCantidad() {
+        return txtCantidad;
     }
 
-    public void setTextField4(JTextField textField4) {
-        this.textField4 = textField4;
+    public void setTxtCantidad(JTextField txtCantidad) {
+        this.txtCantidad = txtCantidad;
+    }
+
+    public JLabel getLblTotal() {
+        return lblTotal;
+    }
+
+    public void setLblTotal(JLabel lblTotal) {
+        this.lblTotal = lblTotal;
+    }
+
+    public JLabel getLblSubtotal() {
+        return lblSubtotal;
+    }
+
+    public void setLblSubtotal(JLabel lblSubtotal) {
+        this.lblSubtotal = lblSubtotal;
+    }
+
+    public JLabel getLblCantidad() {
+        return lblCantidad;
+    }
+
+    public void setLblCantidad(JLabel lblCantidad) {
+        this.lblCantidad = lblCantidad;
+    }
+
+    public JLabel getLblNombre() {
+        return lblNombre;
+    }
+
+    public void setLblNombre(JLabel lblNombre) {
+        this.lblNombre = lblNombre;
     }
 
     public DefaultTableModel getModelo() {
@@ -105,21 +142,24 @@ public class CarritoActualizarView extends JInternalFrame {
     public void setModelo(DefaultTableModel modelo) {
         this.modelo = modelo;
     }
+
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
     public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
         setTitle(mensajes.getMensaje("carrito.titulo")); // Título ventana
 
         String[] columnas = {
                 mensajes.getMensaje("carrito.codigo"),
                 mensajes.getMensaje("carrito.nombre"),
-                mensajes.getMensaje("carrito.precio")
+                mensajes.getMensaje("carrito.precio"),
+                mensajes.getMensaje("carrito.cantidad"),
+                mensajes.getMensaje("carrito.fecha")  // Nueva columna "Fecha"
         };
         modelo.setColumnIdentifiers(columnas);
 
-        actualizarButton.setText(mensajes.getMensaje("carrito.actualizar"));
-        salirButton.setText(mensajes.getMensaje("carrito.salir"));
+        btnActualizar.setText(mensajes.getMensaje("carrito.actualizar"));
+        btnSalir.setText(mensajes.getMensaje("carrito.salir"));
     }
-
 }

@@ -32,7 +32,7 @@
           <text value="Precio"/>
         </properties>
       </component>
-      <component id="ce71e" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <component id="ce71e" class="javax.swing.JTextField" binding="txtCodigo">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -40,7 +40,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="bfa99" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+      <component id="bfa99" class="javax.swing.JTextField" binding="txtNombre">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -48,7 +48,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="43d9c" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+      <component id="43d9c" class="javax.swing.JTextField" binding="txtPrecio">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -56,7 +56,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="171f4" class="javax.swing.JButton" binding="eliminarButton" default-binding="true">
+      <component id="171f4" class="javax.swing.JButton" binding="btnEliminar">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -64,7 +64,7 @@
           <text value="Eliminar"/>
         </properties>
       </component>
-      <component id="a6114" class="javax.swing.JButton" binding="salirButton" default-binding="true">
+      <component id="a6114" class="javax.swing.JButton" binding="btnSalir">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

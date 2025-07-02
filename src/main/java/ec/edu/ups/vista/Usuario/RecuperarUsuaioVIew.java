@@ -1,4 +1,5 @@
 package ec.edu.ups.vista.Usuario;
+
 import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
@@ -56,9 +57,16 @@ public class RecuperarUsuaioVIew extends JFrame {
     public void setTextField1(JTextField textField1) {
         this.textField1 = textField1;
     }
+
+    // Aquí el método para obtener el username
+    public String getUsername() {
+        return textField1.getText().trim();
+    }
+
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
     public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
         setTitle(mensajes.getMensaje("recuperar.titulo"));  // Título ventana
 
@@ -66,5 +74,4 @@ public class RecuperarUsuaioVIew extends JFrame {
 
         btnContinuar.setText(mensajes.getMensaje("recuperar.boton.continuar")); // Botón continuar
     }
-
 }

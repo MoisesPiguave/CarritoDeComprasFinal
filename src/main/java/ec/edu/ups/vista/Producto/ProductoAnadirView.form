@@ -58,7 +58,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="d3b95" class="javax.swing.JButton" binding="guardarButton" default-binding="true">
+      <component id="d3b95" class="javax.swing.JButton" binding="btnGuardar">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -66,7 +66,7 @@
           <text value="Guardar"/>
         </properties>
       </component>
-      <component id="f269c" class="javax.swing.JButton" binding="salirButton" default-binding="true">
+      <component id="f269c" class="javax.swing.JButton" binding="btnSalir">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

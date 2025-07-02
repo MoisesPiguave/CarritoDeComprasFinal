@@ -94,4 +94,15 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
             listaUsuarios.remove(u);
         }
     }
+    @Override
+    public void actualizarUsuario(Usuario usuarioActualizado) {
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Usuario u = listaUsuarios.get(i);
+            if (u.getUsername().equalsIgnoreCase(usuarioActualizado.getUsername())) {
+                u.setContrasenia(usuarioActualizado.getContrasenia());
+                u.setFechaNacimiento(usuarioActualizado.getFechaNacimiento());
+                break;
+            }
+        }
+    }
 }

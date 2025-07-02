@@ -1,24 +1,28 @@
 package ec.edu.ups.vista.Carrito;
+
 import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class DetallesDeCarritoView extends JInternalFrame {
     private JPanel panel1;
     private JTable table1;
-    private JButton salirButton;
-    private JButton eliminarButton;
+    private JButton btnSalir;
+    private JButton btnEliminar;
     private DefaultTableModel modelo;
 
     public DetallesDeCarritoView() {
         setContentPane(panel1);
-        setTitle("Lista de Carrito de Compras");
+        setTitle("Carrito de Compras");
         setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
         setSize(500, 500);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        String[] columnas = {"Codigo", "Nombre", "Precio"};
+
+        // Columnas incluyendo la fecha
+        String[] columnas = {"Codigo", "Nombre", "Precio", "Cantidad", "Fecha"};
         modelo = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -45,19 +49,19 @@ public class DetallesDeCarritoView extends JInternalFrame {
     }
 
     public JButton getSalirButton() {
-        return salirButton;
+        return btnSalir;
     }
 
     public void setSalirButton(JButton salirButton) {
-        this.salirButton = salirButton;
+        this.btnSalir = salirButton;
     }
 
     public JButton getEliminarButton() {
-        return eliminarButton;
+        return btnEliminar;
     }
 
     public void setEliminarButton(JButton eliminarButton) {
-        this.eliminarButton = eliminarButton;
+        this.btnEliminar = eliminarButton;
     }
 
     public DefaultTableModel getModelo() {
@@ -67,9 +71,11 @@ public class DetallesDeCarritoView extends JInternalFrame {
     public void setModelo(DefaultTableModel modelo) {
         this.modelo = modelo;
     }
+
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
     public void actualizarTextos(MensajeInternacionalizacionHandler mensajes) {
         setTitle(mensajes.getMensaje("carrito.titulo")); // Título ventana
 
@@ -80,8 +86,7 @@ public class DetallesDeCarritoView extends JInternalFrame {
         };
         modelo.setColumnIdentifiers(columnas);
 
-        salirButton.setText(mensajes.getMensaje("carrito.salir"));
-        eliminarButton.setText(mensajes.getMensaje("carrito.eliminar"));
+        btnSalir.setText(mensajes.getMensaje("carrito.salir"));
+        btnEliminar.setText(mensajes.getMensaje("carrito.eliminar"));
     }
-
 }

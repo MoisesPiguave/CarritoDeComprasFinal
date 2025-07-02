@@ -1,5 +1,6 @@
 package ec.edu.ups.controlador;
 
+import ec.edu.ups.Util.FormateadorUtils;
 import ec.edu.ups.dao.CarritoDAO;
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.modelo.Carrito;
@@ -9,7 +10,9 @@ import ec.edu.ups.vista.Carrito.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class CarritoController {
 
@@ -39,37 +42,30 @@ public class CarritoController {
         carritoEnCreacion = null;
     }
 
-
     private void configurarEventos() {
 
-        carritoCrearView.getAgregarButton().addActionListener(e -> agregarProductoACarritoCrear());
-        carritoCrearView.getCrearButton().addActionListener(e -> finalizarCreacionCarrito());
-        carritoCrearView.getSalirButton().addActionListener(e -> carritoCrearView.setVisible(false));
+        carritoCrearView.getBtnAgregar().addActionListener(e -> agregarProductoACarritoCrear());
+        carritoCrearView.getBtnCrear().addActionListener(e -> finalizarCreacionCarrito());
+        carritoCrearView.getBtnSalir().addActionListener(e -> carritoCrearView.setVisible(false));
 
-
-        carritoActualizarView.getActualizarButton().addActionListener(e -> agregarOActualizarProductoEnCarritoActualizar());
-        carritoActualizarView.getSalirButton().addActionListener(e -> carritoActualizarView.setVisible(false));
-
+        carritoActualizarView.getBtnActualizar().addActionListener(e -> agregarOActualizarProductoEnCarritoActualizar());
+        carritoActualizarView.getBtnSalir().addActionListener(e -> carritoActualizarView.setVisible(false));
 
         carritoEliminarView.getBuscarButton().addActionListener(e -> buscarCarritoEnEliminar());
         carritoEliminarView.getEliminarButton().addActionListener(e -> eliminarProductoEnCarritoEliminar());
         carritoEliminarView.getEliminarCarritoButton().addActionListener(e -> eliminarCarritoCompleto());
         carritoEliminarView.getSalirButton().addActionListener(e -> carritoEliminarView.setVisible(false));
 
-
         carritoListarView.getSalirButton().addActionListener(e -> carritoListarView.setVisible(false));
         carritoListarView.getDetallesButton().addActionListener(e -> abrirDetallesDeCarrito());
-
 
         detallesDeCarritoView.getEliminarButton().addActionListener(e -> eliminarProductoEnDetalles());
         detallesDeCarritoView.getSalirButton().addActionListener(e -> detallesDeCarritoView.setVisible(false));
     }
 
-
-
     private void agregarProductoACarritoCrear() {
-        String nombreProducto = carritoCrearView.getTextField1().getText().trim();
-        String cantidadTexto = carritoCrearView.getTextField2().getText().trim();
+        String nombreProducto = carritoCrearView.getTxtNombre().getText().trim();
+        String cantidadTexto = carritoCrearView.getTxtCantidad().getText().trim();
 
         if (nombreProducto.isEmpty() || cantidadTexto.isEmpty()) {
             carritoCrearView.mostrarMensaje("Ingrese nombre de producto y cantidad");
@@ -103,28 +99,70 @@ public class CarritoController {
             carritoCrearView.mostrarMensaje("Carrito vacío, agregue productos antes de crear");
             return;
         }
+
+        String fechaTexto = carritoCrearView.getTxtFecha().getText().trim();
+        GregorianCalendar fecha = convertirStringAGregorianCalendar(fechaTexto);
+        if (fecha == null) {
+            carritoCrearView.mostrarMensaje("Formato de fecha inválido. Use dd/MM/yyyy");
+            return;
+        }
+        carritoEnCreacion.setFechaCreacion(fecha);
+
         carritoDAO.crear(carritoEnCreacion);
 
         double subtotal = carritoEnCreacion.calcularSubtotal();
         double total = carritoEnCreacion.calcularTotal();
 
-        carritoCrearView.mostrarMensaje("Carrito creado exitosamente\nSubtotal: $" + subtotal + "\nTotal con IVA: $" + total);
+        String subtotalStr = FormateadorUtils.formatearMoneda(subtotal, Locale.getDefault());
+        String totalStr = FormateadorUtils.formatearMoneda(total, Locale.getDefault());
+        String fechaStr = FormateadorUtils.formatearFecha(fecha.getTime(), Locale.getDefault());
+
+        carritoCrearView.mostrarMensaje("Carrito creado exitosamente\nFecha: " + fechaStr + "\nSubtotal: " + subtotalStr + "\nTotal con IVA: " + totalStr);
 
         carritoEnCreacion = null;
         limpiarTabla(carritoCrearView.getModelo());
         limpiarCamposCarritoCrear();
     }
 
-    private void limpiarCamposCarritoCrear() {
-        carritoCrearView.getTextField1().setText("");
-        carritoCrearView.getTextField2().setText("");
+    private GregorianCalendar convertirStringAGregorianCalendar(String fechaTexto) {
+        if (fechaTexto == null || fechaTexto.length() != 10) {
+            return null;
+        }
+        if (fechaTexto.charAt(2) != '/' || fechaTexto.charAt(5) != '/') {
+            return null;
+        }
+        String diaStr = fechaTexto.substring(0, 2);
+        String mesStr = fechaTexto.substring(3, 5);
+        String anioStr = fechaTexto.substring(6, 10);
+
+        if (!esNumero(diaStr) || !esNumero(mesStr) || !esNumero(anioStr)) {
+            return null;
+        }
+
+        int dia = Integer.parseInt(diaStr);
+        int mes = Integer.parseInt(mesStr);
+        int anio = Integer.parseInt(anioStr);
+
+        if (mes < 1 || mes > 12) {
+            return null;
+        }
+        if (dia < 1 || dia > 31) {
+            return null;
+        }
+
+        return new GregorianCalendar(anio, mes - 1, dia);
     }
 
-
+    private void limpiarCamposCarritoCrear() {
+        carritoCrearView.getTxtNombre().setText("");
+        carritoCrearView.getTxtCantidad().setText("");
+        carritoCrearView.getTxtFecha().setText("");
+    }
 
     private void agregarOActualizarProductoEnCarritoActualizar() {
-        String nombreProducto = carritoActualizarView.getTextField1().getText().trim();
-        String cantidadTexto = carritoActualizarView.getTextField2().getText().trim();
+        // Corrección aquí: usar getTxtNombre() y getTxtCantidad() en lugar de getTextField1/2
+        String nombreProducto = carritoActualizarView.getTxtNombre().getText().trim();
+        String cantidadTexto = carritoActualizarView.getTxtCantidad().getText().trim();
 
         if (nombreProducto.isEmpty() || cantidadTexto.isEmpty()) {
             carritoActualizarView.mostrarMensaje("Ingrese nombre de producto y cantidad");
@@ -155,11 +193,9 @@ public class CarritoController {
     }
 
     private void limpiarCamposCarritoActualizar() {
-        carritoActualizarView.getTextField1().setText("");
-        carritoActualizarView.getTextField2().setText("");
+        carritoActualizarView.getTxtNombre().setText("");
+        carritoActualizarView.getTxtCantidad().setText("");
     }
-
-
 
     private void buscarCarritoEnEliminar() {
         String codigoTexto = carritoEliminarView.getTextField1().getText().trim();
@@ -217,8 +253,6 @@ public class CarritoController {
         }
     }
 
-
-
     public void listarCarritos() {
         List<Carrito> carritos = carritoDAO.listarTodos();
         DefaultTableModel modelo = carritoListarView.getModelo();
@@ -248,8 +282,6 @@ public class CarritoController {
         actualizarTablaCarrito(detallesDeCarritoView.getModelo(), carrito);
         detallesDeCarritoView.setVisible(true);
     }
-
-
 
     private void eliminarProductoEnDetalles() {
         int filaSeleccionada = detallesDeCarritoView.getTable1().getSelectedRow();
@@ -281,8 +313,6 @@ public class CarritoController {
             detallesDeCarritoView.mostrarMensaje("Producto eliminado");
         }
     }
-
-
 
     private void limpiarTabla(DefaultTableModel modelo) {
         modelo.setRowCount(0);

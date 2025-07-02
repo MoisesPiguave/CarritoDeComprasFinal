@@ -1,7 +1,6 @@
 package ec.edu.ups.vista.Usuario;
 import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
 public class CrearUsuarioView extends JFrame {
     private JLabel lblUsuario;
@@ -12,6 +11,17 @@ public class CrearUsuarioView extends JFrame {
     private JButton btnCancelar;
     private JButton btnContinuar;
     private JPanel panelPrincipal;
+    private JComboBox cbx1;
+    private JComboBox cbx2;
+    private JComboBox cbx3;
+    private JPasswordField txtP1;
+    private JTextField txtP2;
+    private JTextField txtP3;
+    private JLabel lblP1;
+    private JLabel lblP2;
+    private JLabel lblP3;
+    private JButton btnCrear;
+    private JButton salirButton;
 
     public CrearUsuarioView() {
         setContentPane(panelPrincipal);
