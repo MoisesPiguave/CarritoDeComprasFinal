@@ -1,54 +1,40 @@
 package ec.edu.ups.dao.impl;
 
-import ec.edu.ups.dao.PreguntaSeguridadDAO;
+import ec.edu.ups.dao.PreguntasDeSeguridadDAO;
+import ec.edu.ups.modelo.PreguntasDeSeguridad;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreguntasDeSeguridadDAOMemoria implements PreguntaSeguridadDAO {
+public class PreguntasDeSeguridadDAOMemoria implements PreguntasDeSeguridadDAO {
 
-    private List<String> bancoPreguntas;
+    private List<PreguntasDeSeguridad> bancoPreguntas;
 
     public PreguntasDeSeguridadDAOMemoria() {
-        bancoPreguntas = new ArrayList<>();
+        this.bancoPreguntas = new ArrayList<>();
         cargarPreguntasIniciales();
     }
 
     private void cargarPreguntasIniciales() {
-        bancoPreguntas.add("¿Cuál es el nombre de tu primera mascota?");
-        bancoPreguntas.add("¿En qué ciudad naciste?");
-        bancoPreguntas.add("¿Cuál es el nombre de tu escuela primaria?");
-        bancoPreguntas.add("¿Cuál es tu comida favorita?");
-        bancoPreguntas.add("¿Cuál es el segundo nombre de tu padre?");
-        bancoPreguntas.add("¿Cuál fue tu primer trabajo?");
-        bancoPreguntas.add("¿Cuál es tu color favorito?");
-        bancoPreguntas.add("¿Cuál es el nombre de tu mejor amigo de la infancia?");
-        bancoPreguntas.add("¿Cuál es tu deporte favorito?");
-        bancoPreguntas.add("¿Cómo se llama tu madre?");
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cuál es el nombre de tu primera mascota?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿En qué ciudad naciste?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cuál es tu color favorito?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cuál es el nombre de tu escuela primaria?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cómo se llama tu mejor amigo de infancia?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cuál es tu comida favorita?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cuál fue tu primer número de teléfono?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cuál es tu deporte favorito?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Qué nombre tenía tu primer juguete?", ""));
+        bancoPreguntas.add(new PreguntasDeSeguridad("¿Cuál es el segundo nombre de tu madre?", ""));
     }
 
     @Override
-    public void agregarPregunta(String pregunta) {
-        if (pregunta != null && !pregunta.trim().isEmpty()) {
-            bancoPreguntas.add(pregunta.trim());
-        }
+    public void agregarPregunta(PreguntasDeSeguridad pregunta) {
+        bancoPreguntas.add(pregunta);
     }
 
     @Override
-    public List<String> obtenerTodasLasPreguntas() {
+    public List<PreguntasDeSeguridad> obtenerTodas() {
         return new ArrayList<>(bancoPreguntas);
-    }
-
-    @Override
-    public String obtenerPreguntaPorIndice(int indice) {
-        if (indice >= 0 && indice < bancoPreguntas.size()) {
-            return bancoPreguntas.get(indice);
-        }
-        return null;
-    }
-
-    @Override
-    public int totalPreguntas() {
-        return bancoPreguntas.size();
     }
 }

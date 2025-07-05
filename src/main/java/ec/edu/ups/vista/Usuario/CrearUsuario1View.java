@@ -1,9 +1,8 @@
 package ec.edu.ups.vista.Usuario;
 
-import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 
-public class CrearUsuario1 extends JFrame {
+public class CrearUsuario1View extends JFrame {
     private JPanel panelPrincipal;
     private JTextField txtNombre;
     private JTextField txtUsuario;
@@ -16,7 +15,7 @@ public class CrearUsuario1 extends JFrame {
     // Atributo para guardar el usuario asociado
     private String usuarioAsociado;
 
-    public CrearUsuario1() {
+    public CrearUsuario1View() {
         setContentPane(panelPrincipal);
         setTitle("Crear Usuario");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

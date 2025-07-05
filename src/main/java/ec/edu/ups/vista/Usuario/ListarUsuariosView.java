@@ -20,7 +20,7 @@ public ListarUsuariosView() {
     setResizable(true);
 
     modelo = new DefaultTableModel();
-    Object[] columnas = {"Usuario", "Contraseña", "Carritos"};
+    Object[] columnas = {"Nombre" ,"Usuario","Telefono","Correo"};
     modelo.setColumnIdentifiers(columnas);
     table1.setModel(modelo);
 

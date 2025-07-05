@@ -20,13 +20,14 @@ import javax.swing.*;
 
 public class Main {
 
+    // DAOs
     private static UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
     private static ProductoDAO productoDAO = new ProductoDAOMemoria();
     private static CarritoDAO carritoDAO = new CarritoDAOMemoria();
 
     // Vistas principales
     private static LoginView loginView = new LoginView();
-    private static MenuPrincipalView menuPrincipalView = new MenuPrincipalView(); // actualizado
+    private static MenuPrincipalView menuPrincipalView = new MenuPrincipalView();
 
     // Vistas Producto
     private static ProductoAnadirView productoAnadirView = new ProductoAnadirView();
@@ -42,10 +43,9 @@ public class Main {
     private static DetallesDeCarritoView detallesDeCarritoView = new DetallesDeCarritoView();
 
     // Vistas Usuario
-    private static CrearUsuarioView crearUsuarioView = new CrearUsuarioView();
-    private static CrearUsuario1 crearUsuario2View = new CrearUsuario1();
-    private static RecuperarUsuaioVIew recuperarView1 = new RecuperarUsuaioVIew();
-    private static RecuperarUsuario2 recuperarView2 = new RecuperarUsuario2();
+    private static CrearUsuario1View crearUsuario1View = new CrearUsuario1View();
+    private static CrearUsuario2View crearUsuario2View = new CrearUsuario2View();
+    private static RecuperarUsuaioVIew recuperarUsuarioView = new RecuperarUsuaioVIew();
     private static ListarUsuariosView listarUsuariosView = new ListarUsuariosView();
     private static EliminarUsuarioView eliminarUsuarioView = new EliminarUsuarioView();
 
@@ -54,6 +54,7 @@ public class Main {
     private static ProductoController productoController;
     private static CarritoController carritoController;
 
+    // Usuario logueado (sesión)
     private static Usuario usuarioLogueado;
 
     public static void main(String[] args) {
@@ -67,10 +68,9 @@ public class Main {
         usuarioController = new UsuarioController(
                 usuarioDAO,
                 loginView,
-                crearUsuarioView,
+                crearUsuario1View,
                 crearUsuario2View,
-                recuperarView1,
-                recuperarView2,
+                recuperarUsuarioView,
                 eliminarUsuarioView,
                 listarUsuariosView
         );
@@ -104,77 +104,71 @@ public class Main {
     public static void abrirMenuPrincipal(Usuario usuario) {
         usuarioLogueado = usuario;
 
-        // Aplica restricciones para administrador y usuario
         boolean esAdmin = usuario.getRol() == Rol.ADMINISTRADOR;
         boolean esUsuarioNormal = usuario.getRol() == Rol.USUARIO;
 
         menuPrincipalView.aplicarRestriccionesPorRol(esAdmin, esUsuarioNormal);
 
-        // Mostrar menú principal y ocultar login
         menuPrincipalView.setVisible(true);
         loginView.setVisible(false);
     }
 
     private static void configurarEventosMenuPrincipal() {
-        // Usuarios
-        menuPrincipalView.getMenuItemCrearUsuario().addActionListener(e -> {
-            crearUsuarioView.setVisible(true);
-        });
+        // Menú Usuarios
+        menuPrincipalView.getMenuItemCrearUsuario().addActionListener(e -> crearUsuario1View.setVisible(true));
 
         menuPrincipalView.getMenuItemListarUsuario().addActionListener(e -> {
             usuarioController.cargarUsuariosEnTabla();
             menuPrincipalView.abrirVentanaInterna(listarUsuariosView);
         });
 
-        menuPrincipalView.getMenuItemEliminarUsuario().addActionListener(e -> {
-            menuPrincipalView.abrirVentanaInterna(eliminarUsuarioView);
-        });
+        menuPrincipalView.getMenuItemEliminarUsuario().addActionListener(e ->
+                menuPrincipalView.abrirVentanaInterna(eliminarUsuarioView)
+        );
 
-        // Productos
-        menuPrincipalView.getMenuItemCrearProducto().addActionListener(e -> {
-            menuPrincipalView.abrirVentanaInterna(productoAnadirView);
-        });
+        // Menú Productos
+        menuPrincipalView.getMenuItemCrearProducto().addActionListener(e ->
+                menuPrincipalView.abrirVentanaInterna(productoAnadirView)
+        );
 
         menuPrincipalView.getMenuItemListarProducto().addActionListener(e -> {
             productoListarView.cargarDatos(productoDAO.listarTodos());
             menuPrincipalView.abrirVentanaInterna(productoListarView);
         });
 
-        menuPrincipalView.getMenuItemActualizarProducto().addActionListener(e -> {
-            menuPrincipalView.abrirVentanaInterna(productoActualizarView);
-        });
+        menuPrincipalView.getMenuItemActualizarProducto().addActionListener(e ->
+                menuPrincipalView.abrirVentanaInterna(productoActualizarView)
+        );
 
-        menuPrincipalView.getMenuItemEliminarProducto().addActionListener(e -> {
-            menuPrincipalView.abrirVentanaInterna(productoEliminarView);
-        });
+        menuPrincipalView.getMenuItemEliminarProducto().addActionListener(e ->
+                menuPrincipalView.abrirVentanaInterna(productoEliminarView)
+        );
 
         menuPrincipalView.getMenuItemBuscarProducto().addActionListener(e -> {
             productoListarView.cargarDatos(productoDAO.listarTodos());
             menuPrincipalView.abrirVentanaInterna(productoListarView);
         });
 
-        // Carrito
-        menuPrincipalView.getMenuItemCrearCarrito().addActionListener(e -> {
-            menuPrincipalView.abrirVentanaInterna(carritoCrearView);
-        });
+        // Menú Carrito
+        menuPrincipalView.getMenuItemCrearCarrito().addActionListener(e ->
+                menuPrincipalView.abrirVentanaInterna(carritoCrearView)
+        );
 
         menuPrincipalView.getMenuItemListarCarrito().addActionListener(e -> {
             carritoListarView.cargarDatos(carritoDAO.listarTodos());
             menuPrincipalView.abrirVentanaInterna(carritoListarView);
         });
 
-        menuPrincipalView.getMenuItemActualizarCarrito().addActionListener(e -> {
-            menuPrincipalView.abrirVentanaInterna(carritoActualizarView);
-        });
+        menuPrincipalView.getMenuItemActualizarCarrito().addActionListener(e ->
+                menuPrincipalView.abrirVentanaInterna(carritoActualizarView)
+        );
 
-        menuPrincipalView.getMenuItemEliminarCarrito().addActionListener(e -> {
-            menuPrincipalView.abrirVentanaInterna(carritoEliminarView);
-        });
+        menuPrincipalView.getMenuItemEliminarCarrito().addActionListener(e ->
+                menuPrincipalView.abrirVentanaInterna(carritoEliminarView)
+        );
 
-        // Cerrar sesión
-        menuPrincipalView.getMenuItemCerrarSesion().addActionListener(e -> {
-            cerrarSesion();
-        });
+        // Menú Cerrar sesión
+        menuPrincipalView.getMenuItemCerrarSesion().addActionListener(e -> cerrarSesion());
     }
 
     private static void mostrarLogin() {

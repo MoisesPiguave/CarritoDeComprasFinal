@@ -1,6 +1,7 @@
 package ec.edu.ups.vista.Usuario;
 import ec.edu.ups.Util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class EliminarUsuarioView extends JInternalFrame {
     private JTextField txtUsuario;
@@ -13,6 +14,10 @@ public class EliminarUsuarioView extends JInternalFrame {
     private JLabel lblCarrito;
     private JLabel lblUsuario1;
     private JPanel panelPrincipal;
+    private JTable tblUsuario;
+    private JButton btnSalir;
+    private JButton btnEliminar;
+    private DefaultTableModel modelo;
 
     public EliminarUsuarioView() {
         setContentPane(panelPrincipal);
@@ -22,6 +27,16 @@ public class EliminarUsuarioView extends JInternalFrame {
         setResizable(true);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(600, 400);
+
+        // Columnas incluyendo la fecha
+        String[] columnas = { "Nombre", "Usuario", "Correo", "Fecha de nacimiento"};
+        modelo = new DefaultTableModel(null, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tblUsuario.setModel(modelo);
     }
 
     public JTextField getTxtUsuario() {

@@ -7,7 +7,6 @@ public class MensajeInternacionalizacionHandler {
     private ResourceBundle bundle;
     private Locale locale;
 
-
     public MensajeInternacionalizacionHandler() {
         this("es", "EC");
     }
@@ -27,11 +26,17 @@ public class MensajeInternacionalizacionHandler {
         this.bundle = ResourceBundle.getBundle("mensajes", locale);
     }
 
+    public void cambiarIdioma(String lenguaje, String pais) {
+        setLenguaje(lenguaje, pais);
+    }
+
     public Locale getLocale() {
         return locale;
     }
 
-    public void cambiarIdioma(String lenguaje, String pais) {
-        setLenguaje(lenguaje, pais);
+    // Método nuevo para asignar directamente Locale
+    public void setLocale(Locale nuevoLocale) {
+        this.locale = nuevoLocale;
+        this.bundle = ResourceBundle.getBundle("mensajes", this.locale);
     }
 }

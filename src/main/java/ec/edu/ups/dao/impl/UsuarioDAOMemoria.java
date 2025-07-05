@@ -1,8 +1,6 @@
 package ec.edu.ups.dao.impl;
 
 import ec.edu.ups.dao.UsuarioDAO;
-import ec.edu.ups.modelo.PreguntasDeSeguridad;
-import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 
 import java.util.ArrayList;
@@ -14,19 +12,30 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
 
     public UsuarioDAOMemoria() {
         listaUsuarios = new ArrayList<>();
-        Usuario admin = new Usuario("admin", "admin123", Rol.ADMINISTRADOR);
+
+        // Usuario admin por defecto para prueba:
+        // (nombre, telefono, username, correo, fechaNacimiento, contrasenia, rol)
+        Usuario admin = new Usuario(
+                "Admin Principal",
+                "0999999999",
+                "admin",
+                "admin@empresa.com",
+                null,  // puede ser null o alguna fecha por defecto
+                "admin123",
+                ec.edu.ups.modelo.Rol.ADMINISTRADOR
+        );
         listaUsuarios.add(admin);
     }
 
     @Override
-    public void crearUsuario(Usuario usuario) {
+    public void create(Usuario usuario) {
         listaUsuarios.add(usuario);
     }
 
     @Override
-    public Usuario buscarPorUsuarioYContrasenia(String usuario, String contrasenia) {
+    public Usuario read(String username) {
         for (Usuario u : listaUsuarios) {
-            if (u.getUsername().equalsIgnoreCase(usuario) && u.getContrasenia().equals(contrasenia)) {
+            if (u.getUsername().equalsIgnoreCase(username)) {
                 return u;
             }
         }
@@ -34,75 +43,21 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
     }
 
     @Override
-    public Usuario buscarPorNombre(String usuario) {
-        for (Usuario u : listaUsuarios) {
-            if (u.getUsername().equalsIgnoreCase(usuario)) {
-                return u;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void actualizarContrasenia(String usuario, String nuevaContrasenia) {
-        Usuario u = buscarPorNombre(usuario);
+    public void update(Usuario usuario) {
+        Usuario u = read(usuario.getUsername());
         if (u != null) {
-            u.setContrasenia(nuevaContrasenia);
+            listaUsuarios.remove(u);
+            listaUsuarios.add(usuario);
         }
     }
 
     @Override
-    public void guardarPreguntasDeSeguridad(String usuario, List<PreguntasDeSeguridad> preguntas) {
-        Usuario u = buscarPorNombre(usuario);
-        if (u != null) {
-            u.setPreguntasDeSeguridad(preguntas);
-        }
-    }
-
-    @Override
-    public List<PreguntasDeSeguridad> obtenerPreguntasDeSeguridad(String usuario) {
-        Usuario u = buscarPorNombre(usuario);
-        if (u != null) {
-            return u.getPreguntasDeSeguridad();
-        }
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean validarRespuestaDeSeguridad(String usuario, String pregunta, String respuesta) {
-        Usuario u = buscarPorNombre(usuario);
-        if (u != null && u.getPreguntasDeSeguridad() != null) {
-            for (PreguntasDeSeguridad p : u.getPreguntasDeSeguridad()) {
-                if (p.getPregunta().equalsIgnoreCase(pregunta) &&
-                        p.getRespuesta().equalsIgnoreCase(respuesta)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public void delete(Usuario usuario) {
+        listaUsuarios.removeIf(u -> u.getUsername().equalsIgnoreCase(usuario.getUsername()));
     }
 
     @Override
     public List<Usuario> listarTodos() {
         return new ArrayList<>(listaUsuarios);
-    }
-
-    @Override
-    public void eliminarUsuario(String username) {
-        Usuario u = buscarPorNombre(username);
-        if (u != null) {
-            listaUsuarios.remove(u);
-        }
-    }
-    @Override
-    public void actualizarUsuario(Usuario usuarioActualizado) {
-        for (int i = 0; i < listaUsuarios.size(); i++) {
-            Usuario u = listaUsuarios.get(i);
-            if (u.getUsername().equalsIgnoreCase(usuarioActualizado.getUsername())) {
-                u.setContrasenia(usuarioActualizado.getContrasenia());
-                u.setFechaNacimiento(usuarioActualizado.getFechaNacimiento());
-                break;
-            }
-        }
     }
 }

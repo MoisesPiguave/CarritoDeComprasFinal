@@ -5,9 +5,21 @@ import javax.swing.*;
 
 public class RecuperarUsuaioVIew extends JFrame {
     private JPanel panelPrincipal;
+    private JLabel lblConfirmar;
+    private JLabel lblContrasena;
+    private JLabel lblRespuesta;
+    private JLabel lblPregunta;
+    private JTextField txtPregunta;
+    private JPasswordField passwordField1;
+    private JPasswordField passwordField2;
     private JLabel lblPreguntas;
     private JComboBox comboBox1;
-    private JTextField textField1;
+    private JTextField txtRespuesta;
+    private JButton btnSalir;
+    private JButton btnConfirmar;
+    private JTextField txtUsuario;
+    private JLabel lblUsuario;
+    private JButton buscarButton;
     private JButton btnContinuar;
 
     public RecuperarUsuaioVIew(){
@@ -18,20 +30,68 @@ public class RecuperarUsuaioVIew extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    public JButton getBtnContinuar() {
-        return btnContinuar;
-    }
-
-    public void setBtnContinuar(JButton btnContinuar) {
-        this.btnContinuar = btnContinuar;
-    }
-
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
 
     public void setPanelPrincipal(JPanel panelPrincipal) {
         this.panelPrincipal = panelPrincipal;
+    }
+
+    public JLabel getLblConfirmar() {
+        return lblConfirmar;
+    }
+
+    public void setLblConfirmar(JLabel lblConfirmar) {
+        this.lblConfirmar = lblConfirmar;
+    }
+
+    public JLabel getLblContrasena() {
+        return lblContrasena;
+    }
+
+    public void setLblContrasena(JLabel lblContrasena) {
+        this.lblContrasena = lblContrasena;
+    }
+
+    public JLabel getLblRespuesta() {
+        return lblRespuesta;
+    }
+
+    public void setLblRespuesta(JLabel lblRespuesta) {
+        this.lblRespuesta = lblRespuesta;
+    }
+
+    public JLabel getLblPregunta() {
+        return lblPregunta;
+    }
+
+    public void setLblPregunta(JLabel lblPregunta) {
+        this.lblPregunta = lblPregunta;
+    }
+
+    public JTextField getTxtPregunta() {
+        return txtPregunta;
+    }
+
+    public void setTxtPregunta(JTextField txtPregunta) {
+        this.txtPregunta = txtPregunta;
+    }
+
+    public JPasswordField getPasswordField1() {
+        return passwordField1;
+    }
+
+    public void setPasswordField1(JPasswordField passwordField1) {
+        this.passwordField1 = passwordField1;
+    }
+
+    public JPasswordField getPasswordField2() {
+        return passwordField2;
+    }
+
+    public void setPasswordField2(JPasswordField passwordField2) {
+        this.passwordField2 = passwordField2;
     }
 
     public JLabel getLblPreguntas() {
@@ -50,17 +110,60 @@ public class RecuperarUsuaioVIew extends JFrame {
         this.comboBox1 = comboBox1;
     }
 
-    public JTextField getTextField1() {
-        return textField1;
+    public JTextField getTxtRespuesta() {
+        return txtRespuesta;
     }
 
-    public void setTextField1(JTextField textField1) {
-        this.textField1 = textField1;
+    public void setTxtRespuesta(JTextField txtRespuesta) {
+        this.txtRespuesta = txtRespuesta;
     }
 
-    // Aquí el método para obtener el username
-    public String getUsername() {
-        return textField1.getText().trim();
+    public JButton getBtnSalir() {
+        return btnSalir;
+    }
+
+    public void setBtnSalir(JButton btnSalir) {
+        this.btnSalir = btnSalir;
+    }
+
+    public JButton getBtnConfirmar() {
+        return btnConfirmar;
+    }
+
+    public void setBtnConfirmar(JButton btnConfirmar) {
+        this.btnConfirmar = btnConfirmar;
+    }
+
+    public JTextField getTxtUsuario() {
+        return txtUsuario;
+    }
+
+    public void setTxtUsuario(JTextField txtUsuario) {
+        this.txtUsuario = txtUsuario;
+    }
+
+    public JLabel getLblUsuario() {
+        return lblUsuario;
+    }
+
+    public void setLblUsuario(JLabel lblUsuario) {
+        this.lblUsuario = lblUsuario;
+    }
+
+    public JButton getBuscarButton() {
+        return buscarButton;
+    }
+
+    public void setBuscarButton(JButton buscarButton) {
+        this.buscarButton = buscarButton;
+    }
+
+    public JButton getBtnContinuar() {
+        return btnContinuar;
+    }
+
+    public void setBtnContinuar(JButton btnContinuar) {
+        this.btnContinuar = btnContinuar;
     }
 
     public void mostrarMensaje(String mensaje) {

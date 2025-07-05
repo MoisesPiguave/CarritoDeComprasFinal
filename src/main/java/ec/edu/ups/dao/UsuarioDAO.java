@@ -1,18 +1,19 @@
 package ec.edu.ups.dao;
 
-import ec.edu.ups.modelo.PreguntasDeSeguridad;
 import ec.edu.ups.modelo.Usuario;
+
 import java.util.List;
 
 public interface UsuarioDAO {
-    void crearUsuario(Usuario usuario);
-    Usuario buscarPorUsuarioYContrasenia(String usuario, String contrasenia);
-    Usuario buscarPorNombre(String usuario);
-    void actualizarContrasenia(String usuario, String nuevaContrasenia);
-    void guardarPreguntasDeSeguridad(String usuario, List<PreguntasDeSeguridad> preguntas);
-    List<PreguntasDeSeguridad> obtenerPreguntasDeSeguridad(String usuario);
-    boolean validarRespuestaDeSeguridad(String usuario, String pregunta, String respuesta);
+
+    void create(Usuario usuario);
+
+    Usuario read(String username);
+
+    void update(Usuario usuario);
+
+    void delete(Usuario usuario);
+
     List<Usuario> listarTodos();
-    void eliminarUsuario(String username);
-    void actualizarUsuario(Usuario usuario);
+
 }

@@ -1,6 +1,7 @@
 package ec.edu.ups.modelo;
 
 public class PreguntasDeSeguridad {
+
     private String pregunta;
     private String respuesta;
 
@@ -23,5 +24,10 @@ public class PreguntasDeSeguridad {
 
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
+    }
+
+    @Override
+    public String toString() {
+        return "Pregunta: " + pregunta;
     }
 }

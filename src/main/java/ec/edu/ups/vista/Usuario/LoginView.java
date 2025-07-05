@@ -11,6 +11,7 @@ public class LoginView extends JFrame {
     private JButton btnIniciarSesion;
     private JButton btnRegistrarse;
     private JButton btnRecuperar;
+    private JComboBox cbxIdioma;
 
     public  LoginView(){
         setContentPane(panelPrincipal);
@@ -88,6 +89,14 @@ public class LoginView extends JFrame {
         passwordField1.setText("");
     }
 
+    public JComboBox getCbxIdioma() {
+        return cbxIdioma;
+    }
+
+    public void setCbxIdioma(JComboBox cbxIdioma) {
+        this.cbxIdioma = cbxIdioma;
+    }
+
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
@@ -101,5 +110,6 @@ public class LoginView extends JFrame {
         btnRegistrarse.setText(mensajes.getMensaje("login.boton.registrarse")); // Botón Registrarse
         btnRecuperar.setText(mensajes.getMensaje("login.boton.recuperar"));     // Botón Recuperar
     }
+
 
 }

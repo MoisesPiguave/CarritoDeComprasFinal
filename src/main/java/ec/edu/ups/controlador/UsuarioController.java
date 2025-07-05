@@ -1,184 +1,113 @@
 package ec.edu.ups.controlador;
 
 import ec.edu.ups.dao.UsuarioDAO;
-import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
-import ec.edu.ups.Util.FormateadorUtils;
 import ec.edu.ups.vista.Usuario.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class UsuarioController {
 
     private UsuarioDAO usuarioDAO;
+
     private LoginView loginView;
-    private CrearUsuarioView crearUsuarioView;
-    private CrearUsuario1 crearUsuario2View;
-    private RecuperarUsuaioVIew recuperarView1;
-    private RecuperarUsuario2 recuperarView2;
+    private CrearUsuario1View crearUsuario1View;
+    private CrearUsuario2View crearUsuario2View;
+    private RecuperarUsuaioVIew recuperarUsuarioView;
     private EliminarUsuarioView eliminarUsuarioView;
     private ListarUsuariosView listarUsuariosView;
-    private Usuario usuarioLogueado;
 
     public UsuarioController(UsuarioDAO usuarioDAO,
                              LoginView loginView,
-                             CrearUsuarioView crearUsuarioView,
-                             CrearUsuario1 crearUsuario2View,
-                             RecuperarUsuaioVIew recuperarView1,
-                             RecuperarUsuario2 recuperarView2,
+                             CrearUsuario1View crearUsuario1View,
+                             CrearUsuario2View crearUsuario2View,
+                             RecuperarUsuaioVIew recuperarUsuarioView,
                              EliminarUsuarioView eliminarUsuarioView,
                              ListarUsuariosView listarUsuariosView) {
-
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
-        this.crearUsuarioView = crearUsuarioView;
+        this.crearUsuario1View = crearUsuario1View;
         this.crearUsuario2View = crearUsuario2View;
-        this.recuperarView1 = recuperarView1;
-        this.recuperarView2 = recuperarView2;
+        this.recuperarUsuarioView = recuperarUsuarioView;
         this.eliminarUsuarioView = eliminarUsuarioView;
         this.listarUsuariosView = listarUsuariosView;
 
-        configurarEventos();
+        initListeners();
     }
 
-    private void configurarEventos() {
-        loginView.getBtnIniciarSesion().addActionListener(e -> {
-            String username = loginView.getTextField1().getText().trim();
-            String contrasenia = new String(loginView.getPasswordField1().getPassword());
+    private void initListeners() {
+        // Aquí agregas los listeners para cada vista, por ejemplo:
 
-            if (username.isEmpty() || contrasenia.isEmpty()) {
-                loginView.mostrarMensaje("Ingrese usuario y contraseña");
-                return;
-            }
-
-            Usuario usuario = usuarioDAO.buscarPorUsuarioYContrasenia(username, contrasenia);
-            if (usuario == null) {
-                loginView.mostrarMensaje("Usuario o contraseña incorrectos");
-            } else {
-                usuarioLogueado = usuario;
-                loginView.mostrarMensaje("Bienvenido " + usuario.getUsername());
-                abrirVentanaPrincipalSegunRol();
-                loginView.dispose();
-            }
-        });
-
-        loginView.getBtnRegistrarse().addActionListener(e -> {
-            crearUsuarioView.setVisible(true);
-            loginView.dispose();
-        });
-
-        crearUsuarioView.getBtnContinuar().addActionListener(e -> {
-            String username = crearUsuarioView.getTxtUsuario().getText().trim();
-            String contrasenia = new String(crearUsuarioView.getPswContrasena().getPassword());
-            String confirmar = new String(crearUsuarioView.getPswConfirmar().getPassword());
-            String fechaTexto = crearUsuarioView.getTxtFechaNacimiento().getText().trim();
-
-            if (username.isEmpty() || contrasenia.isEmpty() || confirmar.isEmpty() || fechaTexto.isEmpty()) {
-                crearUsuarioView.mostrarMensaje("Complete todos los campos, incluyendo la fecha de nacimiento");
-                return;
-            }
-            if (!contrasenia.equals(confirmar)) {
-                crearUsuarioView.mostrarMensaje("Las contraseñas no coinciden");
-                return;
-            }
-            if (usuarioDAO.buscarPorNombre(username) != null) {
-                crearUsuarioView.mostrarMensaje("El usuario ya existe");
-                return;
-            }
-
-            if (fechaTexto.length() != 10 || fechaTexto.charAt(2) != '/' || fechaTexto.charAt(5) != '/') {
-                crearUsuarioView.mostrarMensaje("Formato de fecha incorrecto. Use dd/MM/yyyy");
-                return;
-            }
-
-            int dia = Integer.parseInt(fechaTexto.substring(0, 2));
-            int mes = Integer.parseInt(fechaTexto.substring(3, 5));
-            int anio = Integer.parseInt(fechaTexto.substring(6, 10));
-
-            if (dia < 1 || dia > 31 || mes < 1 || mes > 12 || anio < 1900 || anio > 2100) {
-                crearUsuarioView.mostrarMensaje("Fecha no válida");
-                return;
-            }
-
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date fechaNacimiento = null;
+        // Listener para el botón continuar en crearUsuario1View
+        crearUsuario1View.getBtnContinuar().addActionListener(e -> {
             try {
-                fechaNacimiento = sdf.parse(fechaTexto);
-            } catch (Exception ex) {
-                crearUsuarioView.mostrarMensaje("Error al convertir la fecha");
-                return;
+                String nombre = crearUsuario1View.getTxtNombre().getText();
+                String telefono = crearUsuario1View.getTxtTelefono().getText();
+                String username = crearUsuario1View.getTxtUsuario().getText();
+                String correo = crearUsuario1View.getTxtCorreo().getText();
+                String fechaStr = crearUsuario1View.getTxtFecha().getText();
+
+                if (nombre.isEmpty() || telefono.isEmpty() || username.isEmpty() || correo.isEmpty() || fechaStr.isEmpty()) {
+                    crearUsuario1View.mostrarMensaje("Debe llenar todos los campos.");
+                    return;
+                }
+
+                if (telefono.length() != 10) {
+                    crearUsuario1View.mostrarMensaje("El teléfono debe tener 10 dígitos.");
+                    return;
+                }
+
+                if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+                    crearUsuario1View.mostrarMensaje("Correo inválido.");
+                    return;
+                }
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date fechaNacimiento = sdf.parse(fechaStr);
+
+                if (usuarioDAO.read(username) != null) {
+                    crearUsuario1View.mostrarMensaje("El nombre de usuario ya existe.");
+                    return;
+                }
+
+                // Aquí puedes guardar temporalmente el usuario para continuar registro
+                Usuario usuarioTemp = new Usuario(nombre, telefono, username, correo, fechaNacimiento, null, ec.edu.ups.modelo.Rol.USUARIO);
+                // Guardar usuarioTemp en algún atributo para pasar a crearUsuario2View (segundo paso)
+
+                crearUsuario1View.mostrarMensaje("Datos válidos, continúa al siguiente paso.");
+                crearUsuario1View.setVisible(false);
+                crearUsuario2View.setVisible(true);
+
+                // TODO: pasar usuarioTemp a crearUsuario2View o controlarlo desde aquí
+
+            } catch (ParseException ex) {
+                crearUsuario1View.mostrarMensaje("Formato de fecha inválido. Use dd/MM/yyyy");
             }
-
-            Usuario nuevoUsuario = new Usuario(username, contrasenia, Rol.USUARIO, fechaNacimiento);
-            usuarioDAO.crearUsuario(nuevoUsuario);
-
-            crearUsuario2View.setVisible(true);
-            crearUsuarioView.dispose();
         });
 
-        eliminarUsuarioView.getBtnBuscar().addActionListener(e -> {
-            if (usuarioLogueado == null || usuarioLogueado.getRol() != Rol.ADMINISTRADOR) {
-                eliminarUsuarioView.mostrarMensaje("No tiene permiso para eliminar usuarios");
-                return;
-            }
-            String username = eliminarUsuarioView.getTxtUsuario().getText().trim();
-            if (username.isEmpty()) {
-                eliminarUsuarioView.mostrarMensaje("Ingrese el usuario a eliminar");
-                return;
-            }
-            Usuario u = usuarioDAO.buscarPorNombre(username);
-            if (u == null) {
-                eliminarUsuarioView.mostrarMensaje("Usuario no encontrado");
-                return;
-            }
-            int confirm = JOptionPane.showConfirmDialog(eliminarUsuarioView,
-                    "¿Eliminar usuario: " + username + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                usuarioDAO.eliminarUsuario(username);
-                eliminarUsuarioView.mostrarMensaje("Usuario eliminado");
-            }
-        });
-
-        listarUsuariosView.getLblListar().addActionListener(e -> {
-            if (usuarioLogueado == null || usuarioLogueado.getRol() != Rol.ADMINISTRADOR) {
-                listarUsuariosView.mostrarMensaje("No tiene permiso para listar usuarios");
-                return;
-            }
-            cargarUsuariosEnTabla();
-        });
-    }
-
-    private void abrirVentanaPrincipalSegunRol() {
-        ec.edu.ups.Main.abrirMenuPrincipal(usuarioLogueado);
+        // Aquí agregas más listeners para login, recuperar usuario, eliminar, listar, etc.
     }
 
     public void cargarUsuariosEnTabla() {
         List<Usuario> usuarios = usuarioDAO.listarTodos();
-        DefaultTableModel modelo = listarUsuariosView.getModelo();
+        DefaultTableModel modelo = (DefaultTableModel) listarUsuariosView.getTable1().getModel();
         modelo.setRowCount(0);
-        Locale locale = new Locale("es", "EC");
 
         for (Usuario u : usuarios) {
-            String fechaFormateada = "N/A";
-            if (u.getFechaNacimiento() != null) {
-                fechaFormateada = FormateadorUtils.formatearFecha(u.getFechaNacimiento(), locale);
-            }
-            modelo.addRow(new Object[]{ u.getUsername(), u.getContrasenia(), fechaFormateada });
+            Object[] fila = {
+                    u.getNombre(),
+                    u.getUsername(),
+                    u.getTelefono(),
+                    u.getCorreo()
+            };
+            modelo.addRow(fila);
         }
     }
 
-    public void cerrarSesion() {
-        usuarioLogueado = null;
-        loginView.limpiarCampos();
-        loginView.setVisible(true);
-    }
-
-    public Usuario getUsuarioLogueado() {
-        return usuarioLogueado;
-    }
+    // Métodos para buscar, eliminar, actualizar usuarios, login, etc.
 }
